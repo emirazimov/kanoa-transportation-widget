@@ -1,0 +1,15 @@
+/* .plusIcon:hover {
+  background-color: white;
+} */
+.plusIcon {
+  border: 1px solid #c6ad99;
+}
+.plusIcon:hover {
+  border: 1px groove white;
+}
+.minusIcon {
+  border: 1px solid #c6ad99;
+}
+.minusIcon:hover {
+  border: 1px groove white;
+}
