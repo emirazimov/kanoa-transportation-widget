@@ -28,7 +28,7 @@ export const authApi = {
 
     const headers = {
       Authorization: "Bearer " + jwtToken,
-      "Access-Control-Allow-Origin": "*",
+      "App-Version": "1.0.69",
     }
 
     return axiosInstance
@@ -62,7 +62,7 @@ export const fleetApi = {
         {
           headers: {
             Authorization: "Bearer " + jwtToken,
-            "Access-Control-Allow-Origin": "*",
+            "App-Version": "1.0.69",
           },
         }
       )

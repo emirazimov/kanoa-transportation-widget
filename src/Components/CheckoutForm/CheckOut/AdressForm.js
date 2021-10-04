@@ -49,6 +49,7 @@ import lime from "@material-ui/core/colors/lime"
 import { Popover, TimePicker } from "antd"
 import "antd/dist/antd.css"
 import "./index.css"
+import { setHourlyRedux } from "../../../Redux/hourly-reducer"
 
 const useStyles = makeStyles((theme) => ({
   contentContainer: {
@@ -348,6 +349,7 @@ const AdressFormwithoutReactMemo = ({
   getCompanyCars,
   setFormData,
   formData,
+  setHourlyRedux,
   backgroundScrollStopForTimePicker,
   setBackgroundScrollStopForTimePicker,
   resetInputs,
@@ -551,7 +553,7 @@ const AdressFormwithoutReactMemo = ({
       }
     }
   }
-
+  const [openTimePicker, setOpenTimePicker] = useState(false)
   let firstAirline =
     destinations[0]?.rideCheckPoint.match(/(^|\W)Airport($|\W)/)
   // if (destinations[0]?.rideCheckPoint.match(/(^|\W)Airport($|\W)/)) {
@@ -600,6 +602,8 @@ const AdressFormwithoutReactMemo = ({
       </Button>
     )
   }
+  const [triggerToTimePicker, setTriggerToTimePicker] = useState(false)
+  var eventCount = 0
   const inputStyle = {
     WebkitBoxShadow: "0 0 0 1000px black inset",
     height: "0px",
@@ -810,7 +814,7 @@ const AdressFormwithoutReactMemo = ({
                         //   root: classes.root, // class name, e.g. `classes-nesting-root-x`
                         //   label: classes.label, // class name, e.g. `classes-nesting-label-x`
                         // }}
-
+                        autoOk={true}
                         InputProps={{
                           classes: {
                             root: classes.inputDateTime,
@@ -885,18 +889,41 @@ const AdressFormwithoutReactMemo = ({
                           // popupStyle={{
                           //   color: "red",
                           // }}
+                          // open={openTimePicker}
                           showAction={["click", "focus"]}
                           dropdownStyle={{ position: "fixed" }}
-                          onOpenChange={(isOpen) =>
-                            isOpen
-                              ? setTimeout(() => {
-                                  const startInput = document.querySelector(
-                                    ".ant-picker-content"
-                                  )
-                                  startInput.focus()
-                                }, 100)
-                              : null
-                          }
+                          onOpenChange={(isOpen) => {
+                            setOpenTimePicker(true)
+                            if (isOpen) {
+                              setTimeout(() => {
+                                const startInput = document.querySelector(
+                                  ".ant-picker-content"
+                                )
+                                startInput.focus()
+                              }, 100)
+                            } else {
+                              return null
+                            }
+                          }}
+                          // onSelect={(event) => {
+                          //   // console.log(event._d)
+
+                          //   if (eventCount == 2) {
+                          //     setOpenTimePicker(false)
+                          //     // setTriggerToTimePicker(true)
+                          //     // return event._d
+                          //   } else {
+                          //     eventCount++
+                          //   }
+                          //   // setOpenTimePicker(false)
+                          // }}
+                          // // defaultValue={123}
+                          // // ok={openTimePicker}
+                          // onOk={() => {
+                          //   if (triggerToTimePicker == true) {
+                          //     return true
+                          //   }
+                          // }}
                           style={{
                             zIndex: "10",
                             paddingLeft: "36px",
@@ -1002,6 +1029,7 @@ const AdressFormwithoutReactMemo = ({
                     checked={hourly}
                     onClick={() => {
                       setHourly(!hourly)
+                      setHourlyRedux()
                       // hourly ? setBookingType(2) : setBookingType(1)
                     }}
                   />
@@ -1202,4 +1230,5 @@ export default connect(mapStateToProps, {
   getCarsByType,
   getCompanyCars,
   setFormData,
+  setHourlyRedux,
 })(AdressForm)

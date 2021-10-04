@@ -19,6 +19,7 @@ const ReservationFailed = ({ setActiveStep, failMessage }) => {
             marginLeft: "20px",
             marginRight: "20px",
             marginBottom: "30px",
+            color: "white",
           }}
         >
           {failMessage}

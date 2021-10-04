@@ -103,6 +103,8 @@ const useStyles = makeStyles((theme) => ({
   },
   inputRootAutocomplete2: {
     height: "40px",
+    WebkitBoxShadow: "0 0 0 1000px black inset",
+    height: "0px",
   },
   popupIndicator: {
     height: "100%",
@@ -266,10 +268,14 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
 
   const [riderDetails, setRiderDetails] = React.useState(true)
 
+  const inputStyle = {
+    WebkitBoxShadow: "0 0 0 1000px black inset",
+    height: "0px",
+  }
   const onSubmit = (data) => {
     console.log(data)
     const date = data.paymentInfo.month.split("/")
-    createReservation(setPaymentForm({ ...data }, citiesId, statesId, date))
+    setPaymentForm({ ...data }, citiesId, statesId, date)
     next()
   }
 
@@ -512,7 +518,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                 getOptionLabel={(option) => option.name}
                 renderOption={(option) => (
                   <div style={{ fontSize: "14px" }}>
-                    <span>{option.code}</span>
+                    <span style={{ fontSize: "14px" }}>{option.code}</span>
                     {option.name} ({option.code})
                   </div>
                 )}
@@ -523,9 +529,10 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                     className={classes.inputPlaceholderFontSize}
                     placeholder="State"
                     // variant="outlined"
+
                     InputProps={{
                       ...params.InputProps,
-
+                      style: { inputStyle },
                       classes: {
                         root: classes.inputRootAutocomplete,
                         notchedOutline: classes.noBorder,
@@ -563,7 +570,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                     }}
                     renderOption={(option) => (
                       <div style={{ fontSize: "13px" }}>
-                        <span>{option.code}</span>
+                        <span style={{ fontSize: "14px" }}>{option.code}</span>
                         {option.name} ({option.code})
                       </div>
                     )}
@@ -575,6 +582,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                         placeholder="Cities"
                         InputProps={{
                           ...params.InputProps,
+                          style: { inputStyle },
                           classes: {
                             root: classes.inputRootAutocomplete,
                             notchedOutline: classes.noBorder,
@@ -626,8 +634,10 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                     placeholder="Card number/0000 0000 0000 0000"
                     fullWidth
                     error={errors.paymentInfo?.cardNumber ? true : false}
+                    inputProps={{ style: inputStyle }}
                     InputProps={{
                       // ...params.InputProps,
+                      // style: { inputStyle },
                       classes: {
                         root: classes.inputRootAutocompleteCardNumber,
                         notchedOutline: classes.noBorder,
@@ -664,6 +674,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                         placeholder="mm/yy"
                         fullWidth
                         error={errors.paymentInfo?.month ? true : false}
+                        inputProps={{ style: inputStyle }}
                         InputProps={{
                           // ...params.InputProps,
                           classes: {
@@ -696,6 +707,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                         placeholder="CVV/CVC"
                         fullWidth
                         error={errors.paymentInfo?.cvc ? true : false}
+                        inputProps={{ style: inputStyle }}
                         InputProps={{
                           // ...params.InputProps,
                           classes: {

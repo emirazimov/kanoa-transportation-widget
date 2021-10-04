@@ -90,6 +90,7 @@ const Preview = ({
   back,
   setNoteRedux,
   setOrderSum,
+  setHourlyRedux,
 }) => {
   const classes = useStyles()
   const selectedCar = cars.find((car) => car.id === carId)
@@ -617,7 +618,6 @@ const Preview = ({
               </Grid>
             </Grid>
           </Grid>
-
           <Grid item>
             <Grid
               container
@@ -700,7 +700,6 @@ const Preview = ({
               </Grid>
             </Grid>
           </Grid>
-
           <Grid item>
             <Grid
               container
@@ -761,7 +760,6 @@ const Preview = ({
               </Grid>
             </Grid>
           </Grid>
-
           <Grid item>
             <Grid
               container
@@ -792,38 +790,38 @@ const Preview = ({
               </Grid>
             </Grid>
           </Grid>
-
-          <Grid item>
-            <Grid
-              container
-              direction="row"
-              justify="space-between"
-              alignItems="center"
-            >
-              <Grid item>
-                <Typography style={{ color: "white", fontSize: "16px" }}>
-                  Hours
-                </Typography>
-              </Grid>
-              <Grid item style={{ flexGrow: 1 }}>
-                <Box
-                  style={{
-                    marginTop: "8px",
-                    backgroundColor: "transparent",
-                    marginLeft: "3px",
-                    marginRight: "3px",
-                    borderBottom: "1px dashed white",
-                  }}
-                />
-              </Grid>
-              <Grid item>
-                <Typography style={{ color: "white", fontSize: "16px" }}>
-                  {formData.hours}
-                </Typography>
+          {setHourlyRedux && (
+            <Grid item>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+              >
+                <Grid item>
+                  <Typography style={{ color: "white", fontSize: "16px" }}>
+                    Hours
+                  </Typography>
+                </Grid>
+                <Grid item style={{ flexGrow: 1 }}>
+                  <Box
+                    style={{
+                      marginTop: "8px",
+                      backgroundColor: "transparent",
+                      marginLeft: "3px",
+                      marginRight: "3px",
+                      borderBottom: "1px dashed white",
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography style={{ color: "white", fontSize: "16px" }}>
+                    {formData.hours}
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-
+          )}
           <Grid item>
             <Grid
               container
@@ -935,6 +933,7 @@ const mapStateToProps = (state) => {
     cars: state.cars.cars,
     formData: state.formData,
     carId: state.formData.carInfo.id,
+    setHourlyRedux: state.setHourlyRedux.hourly,
   }
 }
 

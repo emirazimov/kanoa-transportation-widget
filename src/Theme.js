@@ -39,6 +39,11 @@ export default createMuiTheme({
     // MuiDialogContent: {
     //   root: { zIndex: "1000000000000000000" },
     // },
+    MuiDialogActions: {
+      root: {
+        display: "none",
+      },
+    },
     MuiTextField: {
       root: {
         // borderRadius: "12px",

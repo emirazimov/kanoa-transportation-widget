@@ -45,6 +45,7 @@
 }
 .ant-picker-footer {
   /* border: none; */
+  /* display: none; */
 }
 
 .ant-picker-time-panel-column
@@ -114,8 +115,13 @@
   position: relative;
 }
 .ant-btn-primary {
-  background: #595959;
-  border-color: #595959;
+  background: #bd9f5b;
+  border-color: #bd9f5b;
+  text-transform: uppercase;
+  width: 50px;
+  height: 30px;
+  margin-right: -8px;
+  font-size: 15px;
 }
 .ant-picker:hover,
 .ant-picker-focused {
@@ -131,6 +137,8 @@
 .ant-btn:hover,
 .ant-btn:focus {
   background-color: #c6ad99;
+  border-color: #e0a92b;
+  color: black;
 }
 .ant-picker-suffix {
   display: none;

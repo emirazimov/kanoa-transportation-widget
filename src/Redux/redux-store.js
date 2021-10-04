@@ -5,6 +5,7 @@ import companyProfileReducer from "./company-profile-reducer"
 import formReducer from "./form-reducer"
 import carsReducer from "./car-reducer"
 import resetWidgetInputsReducer from "./reset-widget-inputs-reducer"
+import setHourlyReducer from "./hourly-reducer"
 
 let rootReducer = combineReducers({
   companyToken: companyTokenReducer,
@@ -12,6 +13,7 @@ let rootReducer = combineReducers({
   formData: formReducer,
   cars: carsReducer,
   resetWidgetInputs: resetWidgetInputsReducer,
+  setHourlyRedux: setHourlyReducer,
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
