@@ -475,7 +475,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                                     backgroundColor: "transparent",
                                     marginLeft: "3px",
                                     marginRight: "3px",
-                                    borderBottom: "1px dashed white",
+                                    borderBottom: "2px dotted white",
                                   }}
                                 />
                               </Grid>
@@ -516,7 +516,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                                     backgroundColor: "transparent",
                                     marginLeft: "3px",
                                     marginRight: "3px",
-                                    borderBottom: "1px dashed white",
+                                    borderBottom: "2px dotted white",
                                   }}
                                 />
                               </Grid>
@@ -552,7 +552,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                                     backgroundColor: "transparent",
                                     marginLeft: "3px",
                                     marginRight: "3px",
-                                    borderBottom: "1px dashed white",
+                                    borderBottom: "2px dotted white",
                                   }}
                                 />
                               </Grid>
@@ -588,7 +588,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                                     backgroundColor: "transparent",
                                     marginLeft: "3px",
                                     marginRight: "3px",
-                                    borderBottom: "1px dashed white",
+                                    borderBottom: "2px dotted white",
                                   }}
                                 />
                               </Grid>

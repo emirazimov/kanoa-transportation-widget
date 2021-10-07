@@ -422,9 +422,12 @@ const GoogleMap = React.memo(
                               "Daniel K. Inouye International Airport (HNL), Rodgers Blvd, Honolulu, HI, USA"
                             const airportCenter2 =
                               "Honolulu Airport (HNL), Rodgers Blvd, Honolulu, HI, USA"
+                            const airportCenter3 =
+                              "Daniel K. Inouye International Airport (HNL), Rodgers Blvd, Honolulu, HI, USA"
                             if (
                               airportCenter == suggestion.description ||
-                              airportCenter2 == suggestion.description
+                              airportCenter2 == suggestion.description ||
+                              airportCenter3 == suggestion.description
                             ) {
                               return
                             } else {

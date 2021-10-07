@@ -402,7 +402,7 @@ const Preview = ({
                           backgroundColor: "transparent",
                           marginLeft: "2px",
                           marginRight: "3px",
-                          borderBottom: "1px dashed white",
+                          borderBottom: "2px dotted white",
                         }}
                       />
                     </Grid>
@@ -443,7 +443,7 @@ const Preview = ({
                           backgroundColor: "transparent",
                           marginLeft: "2px",
                           marginRight: "3px",
-                          borderBottom: "1px dashed white",
+                          borderBottom: "2px dotted white",
                         }}
                       />
                     </Grid>
@@ -479,7 +479,7 @@ const Preview = ({
                           backgroundColor: "transparent",
                           marginLeft: "2px",
                           marginRight: "3px",
-                          borderBottom: "1px dashed white",
+                          borderBottom: "2px dotted white",
                         }}
                       />
                     </Grid>
@@ -515,7 +515,7 @@ const Preview = ({
                           backgroundColor: "transparent",
                           marginLeft: "2px",
                           marginRight: "3px",
-                          borderBottom: "1px dashed white",
+                          borderBottom: "2px dotted white",
                         }}
                       />
                     </Grid>
@@ -563,7 +563,7 @@ const Preview = ({
                     backgroundColor: "transparent",
                     marginLeft: "3px",
                     marginRight: "3px",
-                    borderBottom: "1px dashed white",
+                    borderBottom: "2px dotted white",
                   }}
                 />
               </Grid>
@@ -601,7 +601,7 @@ const Preview = ({
                     backgroundColor: "transparent",
                     marginLeft: "3px",
                     marginRight: "3px",
-                    borderBottom: "1px dashed white",
+                    borderBottom: "2px dotted white",
                   }}
                 />
               </Grid>
@@ -634,22 +634,31 @@ const Preview = ({
               <Grid item style={{ flexGrow: 1 }}>
                 <Box
                   style={{
+                    // minWidth: "40px",
                     marginTop: "16px",
                     backgroundColor: "transparent",
                     marginLeft: "3px",
                     marginRight: "3px",
-                    borderBottom: "1px dashed white",
+                    borderBottom: "2px dotted white",
                   }}
                 />
               </Grid>
-              <Grid item>
+              <Grid
+                item
+                style={{
+                  display: "inline",
+                  maxWidth: "60%",
+                  textAlign: "right",
+                }}
+              >
                 <Typography
                   style={{
-                    wordWrap: "break-word",
+                    display: "inline",
+                    // wordWrap: "break-word",
                     color: "white",
                     fontSize: "16px",
-                    width: "210px",
-                    textAlign: "end",
+                    width: "100%",
+                    // textAlign: "right",
                   }}
                 >
                   {formData.orderAddressDetails[0].rideCheckPoint}
@@ -673,22 +682,31 @@ const Preview = ({
               <Grid item style={{ flexGrow: 1 }}>
                 <Box
                   style={{
+                    // width: "100%",
                     marginTop: "8px",
                     backgroundColor: "transparent",
                     marginLeft: "3px",
                     marginRight: "3px",
-                    borderBottom: "1px dashed white",
+                    borderBottom: "2px dotted white",
                   }}
                 />
               </Grid>
-              <Grid item>
+              <Grid
+                item
+                style={{
+                  display: "inline",
+                  maxWidth: "60%",
+                  textAlign: "right",
+                }}
+              >
                 <Typography
                   style={{
-                    wordWrap: "break-word",
+                    display: "inline",
+                    // wordWrap: "break-word",
                     color: "white",
                     fontSize: "16px",
-                    width: "210px",
-                    textAlign: "end",
+                    width: "100%",
+                    // textAlign: "right",
                   }}
                 >
                   {
@@ -719,7 +737,7 @@ const Preview = ({
                     backgroundColor: "transparent",
                     marginLeft: "3px",
                     marginRight: "3px",
-                    borderBottom: "1px dashed white",
+                    borderBottom: "2px dotted white",
                   }}
                 />
               </Grid>
@@ -749,7 +767,7 @@ const Preview = ({
                     backgroundColor: "transparent",
                     marginLeft: "3px",
                     marginRight: "3px",
-                    borderBottom: "1px dashed white",
+                    borderBottom: "2px dotted white",
                   }}
                 />
               </Grid>
@@ -779,7 +797,7 @@ const Preview = ({
                     backgroundColor: "transparent",
                     marginLeft: "3px",
                     marginRight: "3px",
-                    borderBottom: "1px dashed white",
+                    borderBottom: "2px dotted white",
                   }}
                 />
               </Grid>
@@ -810,7 +828,7 @@ const Preview = ({
                       backgroundColor: "transparent",
                       marginLeft: "3px",
                       marginRight: "3px",
-                      borderBottom: "1px dashed white",
+                      borderBottom: "2px dotted white",
                     }}
                   />
                 </Grid>
@@ -841,7 +859,7 @@ const Preview = ({
                     backgroundColor: "transparent",
                     marginLeft: "3px",
                     marginRight: "3px",
-                    borderBottom: "1px dashed white",
+                    borderBottom: "2px dotted white",
                   }}
                 />
               </Grid>
