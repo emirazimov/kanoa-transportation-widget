@@ -1,22 +1,22 @@
-import * as axios from "axios"
+import * as axios from 'axios'
 
-const jwtToken = localStorage.getItem("Authorization")
+const jwtToken = localStorage.getItem('Authorization')
 
 const axiosInstance = axios.create({
   baseURL: `https://api.bookinglane.com/api/`,
   headers: {
-    Authorization: "Bearer " + jwtToken,
-    "App-Version": "1.0.69",
+    Authorization: 'Bearer ' + jwtToken,
+    'App-Version': '1.0.69',
   },
 })
 
 export const authApi = {
   getToken() {
-    const company0Key = "bc5ebb93-db90-4341-a4de-169ad9f350d0"
+    const company0Key = 'bc5ebb93-db90-4341-a4de-169ad9f350d0'
     return axios
       .post(
-        "https://api.bookinglane.com/api/companywidget/company-widget-auth",
-        { accessKey: "bc5ebb93-db90-4341-a4de-169ad9f350d0" }
+        'https://api.bookinglane.com/api/companywidget/company-widget-auth',
+        { accessKey: 'bc5ebb93-db90-4341-a4de-169ad9f350d0' }
       )
       .then((response) => {
         return response
@@ -24,15 +24,15 @@ export const authApi = {
   },
 
   getCompanyProfile() {
-    const jwtToken = localStorage.getItem("Authorization")
+    const jwtToken = localStorage.getItem('Authorization')
 
     const headers = {
-      Authorization: "Bearer " + jwtToken,
-      "App-Version": "1.0.69",
+      Authorization: 'Bearer ' + jwtToken,
+      'App-Version': '1.0.69',
     }
 
     return axiosInstance
-      .get("companywidget/company-widget-info", { headers: headers })
+      .get('companywidget/company-widget-info', { headers: headers })
       .then((response) => {
         return response
       })
@@ -54,15 +54,15 @@ export const fleetApi = {
   },
 
   getCompanyCars(dataForm) {
-    const jwtToken = localStorage.getItem("Authorization")
+    const jwtToken = localStorage.getItem('Authorization')
     return axiosInstance
       .post(
-        "car/companycars-withprice",
+        'car/companycars-withprice',
         { ...dataForm },
         {
           headers: {
-            Authorization: "Bearer " + jwtToken,
-            "App-Version": "1.0.69",
+            Authorization: 'Bearer ' + jwtToken,
+            'App-Version': '1.0.69',
           },
         }
       )
@@ -94,8 +94,18 @@ export const placesApi = {
 
 export const formApi = {
   createReservation(form) {
+    const jwtToken = localStorage.getItem('Authorization')
     return axiosInstance
-      .post(`reservation/web`, { ...form })
+      .post(
+        `reservation/web`,
+        { ...form },
+        {
+          headers: {
+            Authorization: 'Bearer ' + jwtToken,
+            'App-Version': '1.0.69',
+          },
+        }
+      )
       .then((response) => {
         return response
       })

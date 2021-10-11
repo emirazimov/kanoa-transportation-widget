@@ -1,60 +1,60 @@
-import Grid from "@material-ui/core/Grid"
-import InputAdornment from "@material-ui/core/InputAdornment"
-import MenuItem from "@material-ui/core/MenuItem"
-import { makeStyles } from "@material-ui/core/styles"
-import { useForm, useFormContext } from "react-hook-form"
-import TextField from "@material-ui/core/TextField"
-import { GoogleApiWrapper, Map, Marker } from "google-maps-react"
-import React, { forwardRef, useState } from "react"
+import Grid from '@material-ui/core/Grid'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import MenuItem from '@material-ui/core/MenuItem'
+import { makeStyles } from '@material-ui/core/styles'
+import { useForm, useFormContext } from 'react-hook-form'
+import TextField from '@material-ui/core/TextField'
+import { GoogleApiWrapper, Map, Marker } from 'google-maps-react'
+import React, { forwardRef, useState } from 'react'
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
-} from "react-places-autocomplete"
+} from 'react-places-autocomplete'
 import {
   AddLocIcon,
   DeleteLocIcon,
   EndLocationIcon,
   StartLocationIcon,
-} from "../../assets/icons"
-import rideCheckPointErrors from "./../CheckoutForm/CheckOut/AdressForm"
-import MapStyles from "./mapStyles"
-import { connect } from "react-redux"
+} from '../../assets/icons'
+import rideCheckPointErrors from './../CheckoutForm/CheckOut/AdressForm'
+import MapStyles from './mapStyles'
+import { connect } from 'react-redux'
 
 var redBorder = null
 
 const useStyles = makeStyles((theme) => ({
   mapContainer: {
-    width: "91.3%",
-    height: "210px",
-    position: "relative",
-    marginTop: "20px",
+    width: '91.3%',
+    height: '210px',
+    position: 'relative',
+    marginTop: '20px',
     // marginLeft: "17px",
     // paddingRight: "50px",
     // paddingRight: "10px",
     // marginRight: "10px",
-    paddingLeft: "15.5px",
-    borderRadius: "20px",
-    zIndex: "10",
-    [theme.breakpoints.down("769")]: {
-      width: "95.7%",
+    paddingLeft: '15.5px',
+    borderRadius: '20px',
+    zIndex: '10',
+    [theme.breakpoints.down('769')]: {
+      width: '95.7%',
     },
-    [theme.breakpoints.down("730")]: {
-      width: "95.3%",
+    [theme.breakpoints.down('730')]: {
+      width: '95.3%',
     },
-    [theme.breakpoints.down("700")]: {
-      width: "95%",
+    [theme.breakpoints.down('700')]: {
+      width: '95%',
     },
-    [theme.breakpoints.down("600")]: {
-      width: "94%",
+    [theme.breakpoints.down('600')]: {
+      width: '94%',
     },
-    [theme.breakpoints.down("500")]: {
-      width: "93%",
+    [theme.breakpoints.down('500')]: {
+      width: '93%',
     },
-    [theme.breakpoints.down("400")]: {
-      width: "92%",
+    [theme.breakpoints.down('400')]: {
+      width: '92%',
     },
-    [theme.breakpoints.down("350")]: {
-      width: "91%",
+    [theme.breakpoints.down('350')]: {
+      width: '91%',
     },
   },
   // mapContainer2: {
@@ -66,45 +66,45 @@ const useStyles = makeStyles((theme) => ({
   //   marginTop: "20px",
   // },
   destinationContainer: {
-    marginTop: "-24px",
+    marginTop: '-24px',
     // padding: theme.spacing(1),
-    paddingTop: "7px",
-    paddingLeft: "8px",
-    paddingRight: "8px",
-    padding: "9px",
-    background: "black",
-    zIndex: "12",
+    paddingTop: '7px',
+    paddingLeft: '8px',
+    paddingRight: '8px',
+    padding: '9px',
+    background: 'black',
+    zIndex: '12',
   },
   destinationText: {
     padding: theme.spacing(1),
   },
   dropDown: {
-    position: "absolute",
+    position: 'absolute',
     zIndex: 1000,
-    justifyContent: "center",
-    width: "500px",
+    justifyContent: 'center',
+    width: '500px',
   },
   destinationInputFrom: {},
   inputRoot: {
-    border: "1px solid #C6AD99",
-    borderRadius: "0px",
-    height: "40px",
-    backgroundColor: "black",
-    "&::placeholder": {
-      color: "white",
+    border: '1px solid #C6AD99',
+    borderRadius: '0px',
+    height: '40px',
+    backgroundColor: 'black',
+    '&::placeholder': {
+      color: 'white',
     },
-    "&:hover": {
-      border: "1px solid white",
+    '&:hover': {
+      border: '1px solid white',
     },
-    fontSize: "14px",
-    color: "white",
+    fontSize: '14px',
+    color: 'white',
   },
   noBorderDefault: {
-    border: "none",
+    border: 'none',
   },
   noBorderRed: {
-    paddingTop: "4px",
-    border: "1px solid #db5858",
+    paddingTop: '4px',
+    border: '1px solid #db5858',
   },
   input: {
     // "&::-webkit-input-placeholder": {
@@ -123,10 +123,10 @@ const useStyles = makeStyles((theme) => ({
     //   /* Firefox 18- */ color: "white",
     //   opacity: "1",
     // },
-    "&::placeholder": {
-      color: "white",
-      opacity: "1",
-      fontSize: "14px",
+    '&::placeholder': {
+      color: 'white',
+      opacity: '1',
+      fontSize: '14px',
     },
     // menuItem: {
     //   backgroundColor: "black",
@@ -182,7 +182,7 @@ const GoogleMap = React.memo(
         const latLng = await getLatLng(results[0])
         const placeId = results[0].place_id
         let placeType = 0
-        if (results[0].types.some((types) => types === "airport")) {
+        if (results[0].types.some((types) => types === 'airport')) {
           placeType = 2
         }
         selectedArray = [...destinations]
@@ -209,16 +209,29 @@ const GoogleMap = React.memo(
         let newArr = [
           ...destinations,
           {
-            rideCheckPoint: "",
+            rideCheckPoint: '',
             latitude: 0,
             longitude: 0,
             placeType: 0,
-            placeId: "",
+            placeId: '',
           },
         ]
         setDestinations(newArr)
       }
 
+      const airportCenter =
+        'Daniel K. Inouye International Airport (HNL), Rodgers Blvd, Honolulu, HI, USA'
+      const airportCenter2 =
+        'Honolulu Airport (HNL), Rodgers Blvd, Honolulu, HI, USA'
+
+      const airportCenter3 =
+        'Daniel K. Inouye International Airport (HNL), Rodgers Blvd, Honolulu, HI, USA'
+
+      const airportCenter4 = [
+        'Daniel K. Inouye International Airport (HNL), Rodgers Blvd, Honolulu, HI, USA',
+        'Honolulu Airport (HNL), Rodgers Blvd, Honolulu, HI, USA',
+      ]
+      var nothing = null
       const removeEndPoint = (index) => {
         let newArr = [...destinations]
         newArr.splice(index, 1)
@@ -229,7 +242,8 @@ const GoogleMap = React.memo(
       //   radius: 2000,
       //   types: ["address"],
       // }
-
+      var copiedSuggestions = null
+      var copiedLoading = null
       React.useEffect(() => {}, [orderAddressDetails])
       React.useEffect(() => {
         // console.log(destinations[0]?.rideCheckPoint.includes("Airport"))
@@ -239,9 +253,9 @@ const GoogleMap = React.memo(
         <>
           <Grid
             container
-            direction="column"
+            direction='column'
             style={{
-              backgroundColor: "black",
+              backgroundColor: 'black',
               // alignText: "center",
             }}
           >
@@ -271,199 +285,203 @@ const GoogleMap = React.memo(
               {/* </Grid> */}
             </Grid>
             <Grid item className={classes.destinationContainer}>
-              <Grid container direction="column">
-                {destinations.map((destination, id) => (
-                  <PlacesAutocomplete
-                    value={destinations[id].rideCheckPoint}
-                    onChange={(value) => handleChange(value, id)}
-                    onSelect={(value) => {
-                      handleSelect(value, id)
-                    }}
-                    key={`${destination.id}${id}`}
-                    // searchOptions={searchOptions}
-                  >
-                    {({
-                      getInputProps,
-                      suggestions,
-                      getSuggestionItemProps,
-                      loading,
-                    }) => (
-                      <div>
-                        <Grid item className={classes.destinationText}>
-                          <div
-                            className={
-                              redBorderOnSubmit || redBorderOnSubmit2
-                                ? classes.noBorderRed
-                                : classes.noBorderDefault
-                            }
-                          >
-                            <TextField
-                              position="start"
-                              style={{
-                                height: "40px",
-                                // border: "none",
+              <Grid container direction='column'>
+                {destinations.map((destination, id) => {
+                  console.log(destinations)
+                  if (!airportCenter4.includes(destination.rideCheckPoint)) {
+                    nothing = destinations[id].rideCheckPoint
+                  }
 
-                                // marginTop: "-4px",
-                                boxShadow: "4px 5px 30px rgba(0, 0, 0, 0.1)",
-                              }}
-                              variant="outlined"
-                              name="rideCheckPoint"
-                              defaultValue={destinations[id].rideCheckPoint}
-                              fullWidth
-                              // inputRef={ref}
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment
-                                    style={{
-                                      marginRight: "10px",
-                                      // marginLeft: "15px",
-                                    }}
-                                  >
-                                    {id === 0 && <StartLocationIcon />}
-                                    {id === destinations.length - 1 && (
-                                      <EndLocationIcon />
-                                    )}
-                                    {id > 0 && id < destinations.length - 1 && (
-                                      <span
+                  return (
+                    <PlacesAutocomplete
+                      value={nothing}
+                      onChange={(value) => handleChange(value, id)}
+                      onSelect={(value) => {
+                        handleSelect(value, id)
+                      }}
+                      key={`${destination.id}${id}`}
+                      // searchOptions={searchOptions}
+                    >
+                      {({
+                        getInputProps,
+                        suggestions,
+                        getSuggestionItemProps,
+                        loading,
+                      }) => {
+                        copiedSuggestions = [...suggestions].filter((item) => {
+                          return !airportCenter4.includes(item.description)
+                        })
+
+                        return (
+                          <div>
+                            <Grid item className={classes.destinationText}>
+                              <div
+                                className={
+                                  redBorderOnSubmit || redBorderOnSubmit2
+                                    ? classes.noBorderRed
+                                    : classes.noBorderDefault
+                                }
+                              >
+                                <TextField
+                                  position='start'
+                                  style={{
+                                    height: '40px',
+                                    // border: "none",
+
+                                    // marginTop: "-4px",
+                                    boxShadow:
+                                      '4px 5px 30px rgba(0, 0, 0, 0.1)',
+                                  }}
+                                  variant='outlined'
+                                  name='rideCheckPoint'
+                                  defaultValue={destinations[id].rideCheckPoint}
+                                  fullWidth
+                                  // inputRef={ref}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment
                                         style={{
-                                          borderRadius: "50%",
-                                          width: "24px",
-                                          height: "25px",
-                                          backgroundColor: "transparent",
-                                          border: "2px solid #FFFFFF",
-                                          textAlign: "center",
-                                          fontFamily: "Roboto",
-                                          fontWeight: "700",
-                                          fontSize: "0.9rem",
-                                          paddingTop: "2px",
-                                          marginLeft: "-5px",
-                                          marginRight: "-5px",
+                                          marginRight: '10px',
+                                          // marginLeft: "15px",
                                         }}
                                       >
-                                        {id}
-                                      </span>
-                                    )}
-                                  </InputAdornment>
-                                ),
-                                endAdornment: (
-                                  <InputAdornment
-                                    style={{
-                                      cursor: "pointer",
-                                      // marginRight: "10px",
-                                    }}
-                                    position="end"
-                                  >
-                                    {id === destinations.length - 1 && (
-                                      <span
-                                        onClick={addEndPoint}
+                                        {id === 0 && <StartLocationIcon />}
+                                        {id === destinations.length - 1 && (
+                                          <EndLocationIcon />
+                                        )}
+                                        {id > 0 &&
+                                          id < destinations.length - 1 && (
+                                            <span
+                                              style={{
+                                                borderRadius: '50%',
+                                                width: '24px',
+                                                height: '25px',
+                                                backgroundColor: 'transparent',
+                                                border: '2px solid #FFFFFF',
+                                                textAlign: 'center',
+                                                fontFamily: 'Roboto',
+                                                fontWeight: '700',
+                                                fontSize: '0.9rem',
+                                                paddingTop: '2px',
+                                                marginLeft: '-5px',
+                                                marginRight: '-5px',
+                                              }}
+                                            >
+                                              {id}
+                                            </span>
+                                          )}
+                                      </InputAdornment>
+                                    ),
+                                    endAdornment: (
+                                      <InputAdornment
                                         style={{
-                                          marginTop: "5px",
+                                          cursor: 'pointer',
+                                          // marginRight: "10px",
                                         }}
+                                        position='end'
                                       >
-                                        <AddLocIcon />
-                                      </span>
-                                    )}
-                                    {id > 0 && id < destinations.length - 1 && (
-                                      <span
-                                        onClick={() => removeEndPoint(id)}
-                                        style={{ marginBottom: "6px" }}
-                                      >
-                                        <DeleteLocIcon />
-                                      </span>
-                                    )}
-                                  </InputAdornment>
-                                ),
-                                classes: {
-                                  root: classes.inputRoot,
-                                  notchedOutline:
-                                    redBorderOnSubmit || redBorderOnSubmit2
-                                      ? classes.noBorderRed
-                                      : classes.noBorderDefault,
-                                  input: classes.input,
-                                },
-                              }}
-                              {...getInputProps({
-                                placeholder: id === 0 ? "From" : "To",
-                                className: "location-search-input",
-                              })}
-                            />
-                          </div>
-                        </Grid>
-                        <div className={classes.dropDown}>
-                          {loading && (
-                            <div style={{ alignItems: "center" }}>
-                              Loading...
-                            </div>
-                          )}
-                          {suggestions.map((suggestion, id) => {
-                            const className = suggestion.active
-                              ? "suggestion-item--active"
-                              : "suggestion-item"
-                            // inline style for demonstration purpose
-                            const style = suggestion.active
-                              ? {
-                                  backgroundColor: "#bababa",
-                                  cursor: "pointer",
-                                  textTransform: "none",
-                                  justifyContent: "center",
-
-                                  width: "380px",
-                                }
-                              : {
-                                  backgroundColor: "white",
-                                  cursor: "pointer",
-                                  textTransform: "none",
-                                  width: "380px",
-
-                                  justifyContent: "center",
-                                }
-
-                            const airportCenter =
-                              "Daniel K. Inouye International Airport (HNL), Rodgers Blvd, Honolulu, HI, USA"
-                            const airportCenter2 =
-                              "Honolulu Airport (HNL), Rodgers Blvd, Honolulu, HI, USA"
-                            const airportCenter3 =
-                              "Daniel K. Inouye International Airport (HNL), Rodgers Blvd, Honolulu, HI, USA"
-                            if (
-                              airportCenter == suggestion.description ||
-                              airportCenter2 == suggestion.description ||
-                              airportCenter3 == suggestion.description
-                            ) {
-                              return
-                            } else {
-                              return (
-                                <div
-                                  key={`${id}${suggestion.description}`}
-                                  {...getSuggestionItemProps(suggestion, {
-                                    className,
-                                    style,
+                                        {id === destinations.length - 1 && (
+                                          <span
+                                            onClick={addEndPoint}
+                                            style={{
+                                              marginTop: '5px',
+                                            }}
+                                          >
+                                            <AddLocIcon />
+                                          </span>
+                                        )}
+                                        {id > 0 &&
+                                          id < destinations.length - 1 && (
+                                            <span
+                                              onClick={() => removeEndPoint(id)}
+                                              style={{ marginBottom: '6px' }}
+                                            >
+                                              <DeleteLocIcon />
+                                            </span>
+                                          )}
+                                      </InputAdornment>
+                                    ),
+                                    classes: {
+                                      root: classes.inputRoot,
+                                      notchedOutline:
+                                        redBorderOnSubmit || redBorderOnSubmit2
+                                          ? classes.noBorderRed
+                                          : classes.noBorderDefault,
+                                      input: classes.input,
+                                    },
+                                  }}
+                                  {...getInputProps({
+                                    placeholder: id === 0 ? 'From' : 'To',
+                                    className: 'location-search-input',
                                   })}
-                                >
-                                  <MenuItem
-                                    onMouseEnter={(e) =>
-                                      (e.target.style.backgroundColor =
-                                        "#C6AD99")
-                                    }
-                                    onMouseLeave={(e) =>
-                                      (e.target.style.backgroundColor = "black")
-                                    }
-                                    style={{
-                                      backgroundColor: "black",
-                                      whiteSpace: "pre-line",
-                                      fontSize: "14px",
-                                    }}
-                                  >
-                                    {suggestion.description}
-                                  </MenuItem>
+                                />
+                              </div>
+                            </Grid>
+                            <div className={classes.dropDown}>
+                              {loading && (
+                                <div style={{ alignItems: 'center' }}>
+                                  Loading...
                                 </div>
-                              )
-                            }
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </PlacesAutocomplete>
-                ))}
+                              )}
+                              {copiedSuggestions.map((suggestion, id) => {
+                                console.log(copiedSuggestions)
+                                const className = suggestion.active
+                                  ? 'suggestion-item--active'
+                                  : 'suggestion-item'
+                                // inline style for demonstration purpose
+                                const style = suggestion.active
+                                  ? {
+                                      backgroundColor: '#bababa',
+                                      cursor: 'pointer',
+                                      textTransform: 'none',
+                                      justifyContent: 'center',
+
+                                      width: '380px',
+                                    }
+                                  : {
+                                      backgroundColor: 'white',
+                                      cursor: 'pointer',
+                                      textTransform: 'none',
+                                      width: '380px',
+
+                                      justifyContent: 'center',
+                                    }
+
+                                return (
+                                  <div
+                                    key={`${id}${suggestion.description}`}
+                                    {...getSuggestionItemProps(suggestion, {
+                                      className,
+                                      style,
+                                    })}
+                                  >
+                                    <MenuItem
+                                      onMouseEnter={(e) =>
+                                        (e.target.style.backgroundColor =
+                                          '#C6AD99')
+                                      }
+                                      onMouseLeave={(e) =>
+                                        (e.target.style.backgroundColor =
+                                          'black')
+                                      }
+                                      style={{
+                                        backgroundColor: 'black',
+                                        whiteSpace: 'pre-line',
+                                        fontSize: '14px',
+                                      }}
+                                    >
+                                      {suggestion.description}
+                                    </MenuItem>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          </div>
+                        )
+                      }}
+                    </PlacesAutocomplete>
+                  )
+                })}
               </Grid>
             </Grid>
           </Grid>
@@ -481,6 +499,6 @@ const mapStateToProps = (state) => {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyCmKhi_5V_pulQtm6DFJ8teDZpR9I5hJoM",
-  libraries: ["places", "drawing", "geometry"],
+  apiKey: 'AIzaSyCmKhi_5V_pulQtm6DFJ8teDZpR9I5hJoM',
+  libraries: ['places', 'drawing', 'geometry'],
 })(connect(mapStateToProps, {})(GoogleMap))

@@ -1,12 +1,12 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Preloader } from "./../Helpers/Preloader"
-import Grid from "@material-ui/core/Grid"
-import { Success } from "../../assets/icons"
-import Typography from "@material-ui/core/Typography"
-import Button from "@material-ui/core/Button"
-import ReservationFailed from "./ReservationFailed"
-import { createReservation, logOut } from "./../../Redux/form-reducer"
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { Preloader } from './../Helpers/Preloader'
+import Grid from '@material-ui/core/Grid'
+import { Success } from '../../assets/icons'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import ReservationFailed from './ReservationFailed'
+import { createReservation, logOut } from './../../Redux/form-reducer'
 
 const Confirmation = ({
   createReservation,
@@ -20,7 +20,7 @@ const Confirmation = ({
   logOut,
   failMessage,
 }) => {
-  React.useEffect(() => {
+  useEffect(() => {
     createReservation(formSummary)
   }, [])
 
@@ -31,11 +31,11 @@ const Confirmation = ({
       ) : isSuccess ? (
         <Grid
           container
-          direction="column"
+          direction='column'
           spacing={2}
-          justify="center"
-          alignItems="center"
-          style={{ height: "80vh", backgroundColor: "black" }}
+          justify='center'
+          alignItems='center'
+          style={{ height: '80vh', backgroundColor: 'black' }}
         >
           <Grid item>
             <Success />
@@ -44,16 +44,16 @@ const Confirmation = ({
                             <Typography variant='body2'>Success</Typography>
                         </Grid> */}
           <Grid item>
-            <Typography variant="body2" align="center">
-              Your reservation was successfully{" "}
-              <Typography variant="body2">
+            <Typography variant='body2' align='center'>
+              Your reservation was successfully{' '}
+              <Typography variant='body2'>
                 submitted. A confirmation email was
-              </Typography>{" "}
+              </Typography>{' '}
               sent to {email && email}.
             </Typography>
           </Grid>
           <Grid item>
-            <Typography variant="body2">
+            <Typography variant='body2'>
               Thanks, {companyName && companyName}
             </Typography>
           </Grid>
@@ -64,8 +64,8 @@ const Confirmation = ({
                 setActiveStep(0)
                 logOut()
               }}
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               fullWidth
             >
               Done
@@ -75,7 +75,7 @@ const Confirmation = ({
       ) : (
         <ReservationFailed
           setActiveStep={setActiveStep}
-          failMessage={failMessage}
+          // failMessage={failMessage}
         />
       )}
     </>

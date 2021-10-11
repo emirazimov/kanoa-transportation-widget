@@ -1,67 +1,67 @@
-import { formApi } from "../api/api"
-import { toggleIsFetching } from "./car-reducer"
-import { failMessage, isSuccess } from "./company-profile-reducer"
+import { formApi } from '../api/api'
+import { toggleIsFetching } from './car-reducer'
+import { failMessage, isSuccess } from './company-profile-reducer'
 
-export const SET_FORM_DATA = "./form-reducer/SET_FORM_DATA"
-const SET_NOTE = "./form-reducer/SET_NOTE"
-const LOGOUT = "./form-reducer/LOGOUT"
-const SET_CAR_ID = "./form-reducer/SET_CAR_ID"
-const SET_ORDER_SUM = "./form-reducer/SET_ORDER_SUM"
-const SET_PAYMENT_FORM = "./form-reducer/SET_PAYMENT_FORM"
+export const SET_FORM_DATA = './form-reducer/SET_FORM_DATA'
+const SET_NOTE = './form-reducer/SET_NOTE'
+const LOGOUT = './form-reducer/LOGOUT'
+const SET_CAR_ID = './form-reducer/SET_CAR_ID'
+const SET_ORDER_SUM = './form-reducer/SET_ORDER_SUM'
+const SET_PAYMENT_FORM = './form-reducer/SET_PAYMENT_FORM'
 
 let initialState = {
   orderType: 3,
   bookingType: 0,
   orderSum: 0,
-  orderStartDateTime: "",
+  orderStartDateTime: '',
   passengersQuantity: 0,
   carInfo: {
     id: 0,
   },
   orderAddressDetails: [
     {
-      rideCheckPoint: "",
+      rideCheckPoint: '',
       latitude: 0,
       longitude: 0,
       placeType: 0,
-      placeId: "",
+      placeId: '',
     },
     {
-      rideCheckPoint: "",
+      rideCheckPoint: '',
       latitude: 0,
       longitude: 0,
       placeType: 0,
-      placeId: "",
+      placeId: '',
     },
   ],
-  orderNotes: "",
+  orderNotes: '',
   hours: 0,
   paymentInfo: {
-    cardNumber: "",
+    cardNumber: '',
     month: null,
     year: null,
-    cvc: "",
+    cvc: '',
     amount: 0,
   },
   client: {
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    address: "",
-    zip: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    zip: '',
     cityId: 0,
     stateId: 0,
   },
   greetClientInfo: {
     id: 0,
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
   },
   isAirportPickupIncluded: false,
-  flightNumber: "",
+  flightNumber: '',
   airlines: {
     id: 0,
   },
@@ -94,55 +94,55 @@ const formReducer = (state = initialState, action) => {
         orderType: 3,
         bookingType: 0,
         orderSum: 0,
-        orderStartDateTime: "",
+        orderStartDateTime: '',
         passengersQuantity: 0,
         carInfo: {
           id: 0,
         },
         orderAddressDetails: [
           {
-            rideCheckPoint: "",
+            rideCheckPoint: '',
             latitude: 0,
             longitude: 0,
             placeType: 0,
-            placeId: "",
+            placeId: '',
           },
           {
-            rideCheckPoint: "",
+            rideCheckPoint: '',
             latitude: 0,
             longitude: 0,
             placeType: 0,
-            placeId: "",
+            placeId: '',
           },
         ],
-        orderNotes: "",
+        orderNotes: '',
         hours: 0,
         paymentInfo: {
-          cardNumber: "",
+          cardNumber: '',
           month: null,
           year: null,
-          cvc: "",
+          cvc: '',
           amount: 0,
         },
         client: {
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNumber: "",
-          address: "",
-          zip: "",
+          firstName: '',
+          lastName: '',
+          email: '',
+          phoneNumber: '',
+          address: '',
+          zip: '',
           cityId: 0,
           stateId: 0,
         },
         greetClientInfo: {
           id: 0,
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNumber: "",
+          firstName: '',
+          lastName: '',
+          email: '',
+          phoneNumber: '',
         },
         isAirportPickupIncluded: false,
-        flightNumber: "",
+        flightNumber: '',
         airlines: {
           id: 0,
         },
@@ -189,11 +189,17 @@ export const createReservation = (formSummary) => {
   return async (dispatch) => {
     dispatch(toggleIsFetching(true))
     let response = await formApi.createReservation(formSummary)
+
     if (response.status === 200) {
       dispatch(isSuccess(true))
     } else {
       dispatch(isSuccess(false))
-      dispatch(failMessage(response.data[0]))
+
+      dispatch(
+        response.data[0]
+          ? failMessage(response.data[0])
+          : failMessage(response.status)
+      )
     }
     dispatch(toggleIsFetching(false))
   }
