@@ -15,7 +15,7 @@ const Hours = ({
   //   const [hoursAddressForm, setHoursAddressForm] = useState(0)
 
   const onDecrease = () => {
-    if (hoursAddressForm === 0) {
+    if (hoursAddressForm === 1) {
       return
     }
     setHoursAddressForm((hoursAddressForm) => hoursAddressForm - 1)
@@ -72,6 +72,7 @@ const Hours = ({
               size="1"
               style={{
                 // pointerEvents: "none",
+                minWidth: "30px",
                 marginRight: "3px",
                 marginBottom: "4px",
                 backgroundColor: "transparent",

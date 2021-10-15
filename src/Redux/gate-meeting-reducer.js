@@ -1,31 +1,31 @@
 import { authApi } from "../api/api"
 
-const SET_HOURLY = "/redux/companyTokenReducer/SET_HOURLY"
+const SET_GATE_MEETING = "/redux/companyTokenReducer/SET_GATE_MEETING"
 
 let initialState = {
-  hourlyRedux: false,
+  isGateMeeting: false,
 }
 
-const setHourlyReducer = (state = initialState, action) => {
+const gateMeetingReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_HOURLY:
+    case SET_GATE_MEETING:
       return {
         ...state,
-        hourlyRedux: action.payload,
+        isGateMeeting: action.payload,
       }
     default:
       return state
   }
 }
 
-export const setHourlyActionCreator = (flag) => ({
-  type: SET_HOURLY,
+export const setGateMeetingActionCreator = (flag) => ({
+  type: SET_GATE_MEETING,
   payload: flag,
 })
 
-export const setHourlyRedux = (flag) => {
+export const setGateMeetingRedux = (flag) => {
   return (dispatch) => {
-    dispatch(setHourlyActionCreator(flag))
+    dispatch(setGateMeetingActionCreator(flag))
   }
 }
 
@@ -44,4 +44,4 @@ export const setHourlyRedux = (flag) => {
 //   }
 // }
 
-export default setHourlyReducer
+export default gateMeetingReducer

@@ -1,19 +1,19 @@
-import DateFnsUtils from '@date-io/date-fns'
-import { ListItem, TextField, useMediaQuery } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import { makeStyles } from '@material-ui/core/styles'
-import Switch from '@material-ui/core/Switch'
-import Typography from '@material-ui/core/Typography'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
-import Autocomplete from '@material-ui/lab/Autocomplete'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import React, { useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import { connect } from 'react-redux'
-import { placesApi } from '../../../api/api'
+import DateFnsUtils from "@date-io/date-fns"
+import { ListItem, TextField, useMediaQuery } from "@material-ui/core"
+import Button from "@material-ui/core/Button"
+import Grid from "@material-ui/core/Grid"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import { makeStyles } from "@material-ui/core/styles"
+import Switch from "@material-ui/core/Switch"
+import Typography from "@material-ui/core/Typography"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import Autocomplete from "@material-ui/lab/Autocomplete"
+import { MuiPickersUtilsProvider } from "@material-ui/pickers"
+import React, { useState } from "react"
+import { FormProvider, useForm } from "react-hook-form"
+import { connect } from "react-redux"
+import { placesApi } from "../../../api/api"
 import {
   ClockIcon,
   DateIcon,
@@ -23,186 +23,192 @@ import {
   PlaneIcon,
   RightArrowForAdressForm,
   Ticket,
-} from '../../../assets/icons'
-import { getCarsByType } from '../../../Redux/car-reducer'
-import GoogleMap from '../../GoogleMap/GoogleMap'
-import { getCompanyCars } from './../../../Redux/car-reducer'
+} from "../../../assets/icons"
+import { getCarsByType } from "../../../Redux/car-reducer"
+import GoogleMap from "../../GoogleMap/GoogleMap"
+import { getCompanyCars } from "./../../../Redux/car-reducer"
 import {
   CustomFormInput,
+  CustomMaskInput,
   DataInputControl,
   DateInputControl,
   TimeInputControl,
-} from './CustomFormInput'
-import Hours from './Hours'
-import PassengerQuantity from './PassengerQuantity'
-import { withStyles } from '@material-ui/styles'
+  TimeInputControlNewOne,
+} from "./CustomFormInput"
+import Hours from "./Hours"
+import PassengerQuantity from "./PassengerQuantity"
+import { withStyles } from "@material-ui/styles"
 // import Carousel, { Dots, slidesToShowPlugin } from '@brainhubeu/react-carousel';
-import Carousel, { consts } from 'react-elastic-carousel'
+import Carousel, { consts } from "react-elastic-carousel"
 // import Carousel from "react-material-ui-carousel";
-import Tooltip from '@material-ui/core/Tooltip'
-import { setFormData } from './../../../Redux/form-reducer'
+import Tooltip from "@material-ui/core/Tooltip"
+import { setFormData } from "./../../../Redux/form-reducer"
 // import "@brainhubeu/react-carousel/lib/style.css"
-import { createMuiTheme } from '@material-ui/core'
-import { ThemeProvider } from '@material-ui/styles'
-import Blue from '@material-ui/core/colors/blue'
-import lime from '@material-ui/core/colors/lime'
-import { Popover, TimePicker } from 'antd'
-import 'antd/dist/antd.css'
-import './index.css'
-import { setHourlyRedux } from '../../../Redux/hourly-reducer'
+import { createMuiTheme } from "@material-ui/core"
+import { ThemeProvider } from "@material-ui/styles"
+import Blue from "@material-ui/core/colors/blue"
+import lime from "@material-ui/core/colors/lime"
+import { Popover, TimePicker } from "antd"
+import "antd/dist/antd.css"
+import "./index.css"
+import { setHourlyRedux } from "../../../Redux/hourly-reducer"
+import { setGateMeetingRedux } from "../../../Redux/gate-meeting-reducer"
+import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab"
 
 const useStyles = makeStyles((theme) => ({
   contentContainer: {
     padding: theme.spacing(2),
-    paddingTop: '0px',
-    paddingBottom: '0px',
-    background: '#000000',
+    paddingTop: "0px",
+    paddingBottom: "0px",
+    background: "#000000",
   },
 
   carItem: {
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
     marginTop: theme.spacing(1),
     padding: 0,
-    width: '100%',
-    height: '80%',
-    boxShadow: '4px 5px 30px rgba(0, 0, 0, 0.1)',
-    cursor: 'pointer',
-    border: '1px solid #C6AD99',
-    '&:hover': {
-      background: '#54595F',
-      color: 'white',
-      transition: '400ms',
+    width: "100%",
+    height: "80%",
+    boxShadow: "4px 5px 30px rgba(0, 0, 0, 0.1)",
+    cursor: "pointer",
+    border: "1px solid #C6AD99",
+    "&:hover": {
+      background: "#54595F",
+      color: "white",
+      transition: "400ms",
     },
   },
   carFont: {
-    textTransform: 'uppercase',
-    fontSize: '11px',
+    textTransform: "uppercase",
+    fontSize: "11px",
     // marginLeft: "-5px",
-    color: 'white',
+    color: "white",
   },
   carImageContainer: {
-    width: '63px',
-    textAlign: 'center',
+    width: "63px",
+    textAlign: "center",
   },
   carImage: {
-    width: '100%',
-    height: '30px',
-    objectFit: 'cover',
+    width: "100%",
+    height: "30px",
+    objectFit: "cover",
     // padding: "5px",
     // paddingLeft: "4px",
-    userDrag: 'none',
-    userSelect: 'none',
-    mozUserSelect: 'none',
-    webkitUserDrag: 'none',
-    webkitUserSelect: 'none',
-    msUserSelect: 'none',
+    userDrag: "none",
+    userSelect: "none",
+    mozUserSelect: "none",
+    webkitUserDrag: "none",
+    webkitUserSelect: "none",
+    msUserSelect: "none",
   },
   carImageStylesForBiggerTypeOfImage: {
-    width: '90%',
-    height: '30px',
-    objectFit: 'contain',
+    width: "90%",
+    height: "30px",
+    objectFit: "contain",
     // padding: "2px",
 
     // paddingBottom: "5px",
     // paddingTop: "10px",
-    userDrag: 'none',
-    userSelect: 'none',
-    mozUserSelect: 'none',
-    webkitUserDrag: 'none',
-    webkitUserSelect: 'none',
-    msUserSelect: 'none',
+    userDrag: "none",
+    userSelect: "none",
+    mozUserSelect: "none",
+    webkitUserDrag: "none",
+    webkitUserSelect: "none",
+    msUserSelect: "none",
   },
   carItemContainer: {
     paddingTop: theme.spacing(1.2),
     paddingBottom: theme.spacing(1.2),
 
-    '&:hover': {
-      color: 'white',
+    "&:hover": {
+      color: "white",
     },
   },
   preferences: {
-    color: 'black',
-    marginLeft: '10px',
-    fontSize: '14px',
-    marginTop: '-5px',
+    color: "black",
+    marginLeft: "10px",
+    fontSize: "14px",
+    marginTop: "-5px",
   },
   submitButton: {
-    paddingTop: '10px',
-    paddingBottom: '10px',
+    paddingTop: "10px",
+    paddingBottom: "10px",
   },
   active: {
     // color: '#392BAA',
-    background: '#1B1837',
+    background: "#1B1837",
   },
   input: {
-    '&::placeholder': {
-      color: 'white',
-      opacity: '1',
-      fontSize: '14px',
+    "&::placeholder": {
+      color: "white",
+      opacity: "1",
+      fontSize: "14px",
     },
-    '&:-webkit-autofill': {
-      height: '0px',
-      border: 'none',
-      borderRadius: '0px',
-      WebkitBoxShadow: '0 0 0 1000px white inset',
-      WebkitTextFillColor: 'white',
+    "&:-webkit-autofill": {
+      height: "0px",
+      border: "none",
+      borderRadius: "0px",
+      WebkitBoxShadow: "0 0 0 1000px white inset",
+      WebkitTextFillColor: "white",
     },
   },
   listRoot: {
-    '&:hover': {
-      background: '#54595F',
-      '& $carFont': {
-        color: 'white ',
+    "&:hover": {
+      background: "#54595F",
+      "& $carFont": {
+        color: "white ",
       },
     },
-    '&.MuiListItem-root.Mui-selected, &.MuiListItem-root.Mui-selected:hover': {
-      background: '#54595F',
-      '& $carFont': {
-        color: 'white ',
+    "&.MuiListItem-root.Mui-selected, &.MuiListItem-root.Mui-selected:hover": {
+      background: "#54595F",
+      "& $carFont": {
+        color: "white ",
       },
     },
   },
   carouselRoot: {
-    background: 'black',
-    boxShadow: '4px 5px 30px rgba(0, 0, 0, 0.1)',
-    minWidth: '30px',
-    height: '66px',
-    marginTop: '8px',
-    cursor: 'pointer',
-    borderRadius: '0',
-    border: '1px solid #C6AD99',
-    '&:hover': {
-      backgroundColor: '#bdbdbd',
+    background: "black",
+    boxShadow: "4px 5px 30px rgba(0, 0, 0, 0.1)",
+    minWidth: "30px",
+    height: "66px",
+    marginTop: "8px",
+    cursor: "pointer",
+    borderRadius: "0",
+    border: "1px solid #C6AD99",
+    "&:hover": {
+      backgroundColor: "#bdbdbd",
     },
   },
   noBorderDefault: {
-    border: '1px solid #C6AD99',
-    '&:hover': {
-      border: '1px solid white',
+    border: "1px solid #C6AD99",
+    borderRadius: "0px",
+    "&:hover": {
+      border: "1px solid white",
     },
   },
   noBorderRed: {
-    border: '1px solid #db5858',
+    borderRadius: "0px",
+    border: "1px solid #db5858",
   },
   redBorderForAirlines: {
-    border: '1px solid #db5858',
+    border: "1px solid #db5858",
   },
   redBorderForAirlinesDefault: {
-    borderTop: '2px solid #C6AD99',
+    borderTop: "2px solid #C6AD99",
   },
   inputDateTime: {
-    height: '40px',
-    fontSize: '14px',
-    '&-webkit-autofill': {
-      '&-webkit-box-shadow': '0 0 0 1000px red inset',
+    height: "40px",
+    fontSize: "14px",
+    "&-webkit-autofill": {
+      "&-webkit-box-shadow": "0 0 0 1000px red inset",
     },
 
-    '&:hover': {
-      transition: '400ms',
+    "&:hover": {
+      transition: "400ms",
     },
-    color: 'white',
-    '&.MuiIconButton-root': {
-      color: 'white',
+    color: "white",
+    "&.MuiIconButton-root": {
+      color: "white",
     },
     // ":-webkit-autofill": {
     //   WebkitBoxShadow: "0 0 0 1000px white inset",
@@ -210,80 +216,92 @@ const useStyles = makeStyles((theme) => ({
     // },
   },
   carTypeWithRed: {
-    border: '1px solid #db5858',
+    border: "1px solid #db5858",
   },
   carContainerRed: {
     // paddingTop: "20px",
-    marginTop: '10px',
-    marginBottom: '10px',
-    paddingBottom: '6px',
-    border: '1px solid #db5858',
+    marginTop: "10px",
+    marginBottom: "10px",
+    paddingBottom: "6px",
+    border: "1px solid #db5858",
   },
   carContainerDefault: {
-    border: 'none',
+    border: "none",
   },
   carTypeDefault: {
-    border: 'none',
+    border: "none",
   },
   inputTimehover: {
-    border: '1px solid white',
+    border: "1px solid white",
   },
   inputTimehover2: {
-    border: '1px solid white',
+    border: "1px solid white",
   },
   redBorderForPassengers: {
-    paddingTop: '4px',
-    border: '1px solid #db5858',
+    paddingTop: "4px",
+    border: "1px solid #db5858",
   },
   redBorderForPassengersNone: {
-    border: 'none',
+    border: "none",
   },
   noBorder: {
-    border: 'none',
+    border: "none",
   },
   buttonSelf: {
-    background: 'black',
-    border: '1px solid #C6AD99',
-    '&:hover': {
-      background: '#C6AD99',
-      '& $typographyForButton': {
-        color: 'black',
+    background: "black",
+    border: "1px solid #C6AD99",
+    "&:hover": {
+      background: "#C6AD99",
+      "& $typographyForButton": {
+        color: "black",
       },
     },
   },
   popupIndicator: {
-    color: 'white',
+    color: "white",
   },
   typographyForButton: {
-    fontSize: '14px',
-    color: '#C6AD99',
+    fontSize: "14px",
+    color: "#C6AD99",
   },
   option: {
-    backgroundColor: 'black',
-    '&:hover': {
-      backgroundColor: '#C6AD99',
+    backgroundColor: "black",
+    "&:hover": {
+      backgroundColor: "#C6AD99",
     },
   },
   airLinesInput: {
-    border: '1px solid #C6AD99',
-    '&:hover': {
-      border: '1px solid white',
+    border: "1px solid #C6AD99",
+    "&:hover": {
+      border: "1px solid white",
     },
   },
   flightNumberInput: {
-    '&:-webkit-autofill': {
-      '-webkit-box-shadow': '0 0 0 100px #000 inset',
-      '-webkit-text-fill-color': '#fff',
+    "&:-webkit-autofill": {
+      "-webkit-box-shadow": "0 0 0 100px #000 inset",
+      "-webkit-text-fill-color": "#fff",
     },
-    border: '1px solid #C6AD99',
-    '&:hover': {
-      border: '1px solid white',
+    border: "1px solid #C6AD99",
+    "&:hover": {
+      border: "1px solid white",
     },
   },
   selectedOption: {
-    backgroundColor: '#C6AD99',
-    '&$selected': {
-      backgroundColor: '#C6AD99',
+    backgroundColor: "#C6AD99",
+    "&$selected": {
+      backgroundColor: "#C6AD99",
+    },
+  },
+  rootToggleButton: {
+    color: "#F8D9C1",
+    borderRadius: "0px",
+    "&.MuiToggleButton-root.Mui-selected": {
+      background: "#F8D9C1",
+      color: "black",
+    },
+    "&:hover": {
+      background: "#F8D9C1",
+      color: "black",
     },
   },
 }))
@@ -293,41 +311,41 @@ const AntSwitch = withStyles((theme) => ({
     width: 38,
     height: 21,
     padding: 0,
-    display: 'flex',
+    display: "flex",
   },
   switchBase: {
-    '&:hover': {
-      paddingRight: '2.7px',
-      paddingBottom: '3px',
-      backgroundColor: '#c7c7c7',
+    "&:hover": {
+      paddingRight: "2.7px",
+      paddingBottom: "3px",
+      backgroundColor: "#c7c7c7",
     },
     padding: 2,
-    paddingTop: '2.2px',
-    color: '#675005',
+    paddingTop: "2.2px",
+    color: "#675005",
 
-    '&$checked': {
-      transform: 'translateX(16px)',
-      color: '#C19815',
+    "&$checked": {
+      transform: "translateX(16px)",
+      color: "#C19815",
 
-      '& + $track': {
+      "& + $track": {
         opacity: 1,
-        backgroundColor: 'white',
-        borderColor: 'black',
+        backgroundColor: "white",
+        borderColor: "black",
       },
     },
   },
   thumb: {
     width: 14,
     height: 14,
-    boxShadow: 'none',
-    marginTop: '1.5px',
-    marginLeft: '2px',
+    boxShadow: "none",
+    marginTop: "1.5px",
+    marginLeft: "2px",
   },
   track: {
     border: `1px solid black`,
     borderRadius: 19,
     opacity: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   checked: {},
 }))(Switch)
@@ -350,18 +368,22 @@ const AdressFormwithoutReactMemo = ({
   setFormData,
   formData,
   setHourlyRedux,
+  setGateMeetingRedux,
+  gateMeeting,
+  hourlyRedux,
   backgroundScrollStopForTimePicker,
   setBackgroundScrollStopForTimePicker,
   resetInputs,
 }) => {
   const classes = useStyles()
-  console.log('AdressFrom')
+  console.log("AdressFrom")
   const [carSelectionID, setCarSelectionID] = useState(0)
   const [bookingType, setBookingType] = useState(1)
   const [passengers, setPassengers] = useState(0)
-  const [hoursAddressForm, setHoursAddressForm] = useState(0)
+  const [hoursAddressForm, setHoursAddressForm] = useState(1)
   const [disableHourly, setDisableHourly] = useState(false)
   const [hourly, setHourly] = useState(false)
+  // var hourly = false
   const [isGateMeeting, setIsGateMeeting] = useState(false)
   const [isAirline, setIsAirline] = useState(false)
   const [airlineId, setAirlineId] = useState(0)
@@ -382,21 +404,24 @@ const AdressFormwithoutReactMemo = ({
   const [redBorderOnSubmitForPassengers, setRedBorderOnSubmitForPassengers] =
     useState(false)
   const [redBorderOnAirlines, setRedBorderOnAirlines] = useState(false)
-
+  const [
+    isAirportPickupIncludedLocalState,
+    setIsAirportPickupIncludedLocalState,
+  ] = useState(false)
   const [destinations, setDestinations] = useState([
     {
-      rideCheckPoint: '',
+      rideCheckPoint: "",
       latitude: 0,
       longitude: 0,
       placeType: 0,
-      placeId: '',
+      placeId: "",
     },
     {
-      rideCheckPoint: '',
+      rideCheckPoint: "",
       latitude: 0,
       longitude: 0,
       placeType: 0,
-      placeId: '',
+      placeId: "",
     },
   ])
 
@@ -414,6 +439,7 @@ const AdressFormwithoutReactMemo = ({
   })
 
   const onSubmit = (data) => {
+    console.log(data)
     // console.log(data.orderStartDate, data.orderStartTime)
 
     // if (
@@ -426,7 +452,7 @@ const AdressFormwithoutReactMemo = ({
     // ) {
     if (onSubmit2(data)) {
       getCompanyCars({
-        hours: hoursAddressForm,
+        hours: hourly ? hoursAddressForm : 0,
         isGateMeeting: isGateMeeting,
         airlines: { id: airlineId },
         orderAddressDetails: [...destinations],
@@ -435,13 +461,16 @@ const AdressFormwithoutReactMemo = ({
         typeId: carSelectionID,
         bookingType: bookingType,
         passengersQuantity: passengers,
+        isAirportPickupIncluded: isAirportPickupIncludedLocalState,
       })
 
-      const forRes = data.orderStartDate.toLocaleDateString('en-US')
-      const forRes2 = data.orderStartTime._d.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
+      const forRes = data.orderStartDate.toLocaleDateString("en-US")
+      const forRes2 = data.orderStartTime._d.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
       })
+
+      // + ` ${AMPM}`
       const resData = {
         orderStartDate: `${forRes}`,
         orderStartTime: `${forRes2}`,
@@ -451,20 +480,21 @@ const AdressFormwithoutReactMemo = ({
       }
 
       setFormData(resData2)
+
       console.log(
         destinations[0].rideCheckPoint,
         destinations[1].rideCheckPoint,
         data.orderStartDate,
-        data.orderStartTime,
+        data.orderStartTime + ` ${AMPM}`,
         {
-          flightNumber: data.flightNumber,
-          hours: hoursAddressForm,
-          isAirportPickupIncluded: isGateMeeting,
+          hours: hourly ? hoursAddressForm : 0,
+          isGateMeeting: isGateMeeting,
           airlines: { id: airlineId },
           orderAddressDetails: [...destinations],
+          flightNumber: data.flightNumber,
           page: pageSize,
-          bookingType: bookingType,
           typeId: carSelectionID,
+          bookingType: bookingType,
           passengersQuantity: passengers,
         }
       )
@@ -511,6 +541,8 @@ const AdressFormwithoutReactMemo = ({
       data.orderStartTime &&
       carSelectionID &&
       passengers
+      // &&
+      // AMPM
     ) {
       if (isAirline) {
         if (!airlineId) {
@@ -533,7 +565,7 @@ const AdressFormwithoutReactMemo = ({
       } else {
         setRedBorderOnSubmit2(false)
       }
-      if (!data.orderStartDate?.toLocaleDateString('en-GB')) {
+      if (!data.orderStartDate?.toLocaleDateString("en-GB")) {
         setRedBorderOnSubmitForDate(true)
       } else {
         setRedBorderOnSubmitForDate(false)
@@ -543,6 +575,11 @@ const AdressFormwithoutReactMemo = ({
       } else {
         setRedBorderOnSubmitForTime(false)
       }
+      // if (!AMPM) {
+      //   setRedBorderOnSubmitForTime(true)
+      // } else {
+      //   setRedBorderOnSubmitForTime(false)
+      // }
       if (carSelectionID) {
         setRedBorderOnSubmitForCarType(false)
       } else {
@@ -586,6 +623,23 @@ const AdressFormwithoutReactMemo = ({
       setDisableHourly(false)
     }
   }, [firstAirline])
+  React.useEffect(() => {
+    if (hourly) {
+      if (firstAirline) {
+        setBookingType(3)
+      } else {
+        setBookingType(2)
+      }
+
+      // setDisableHourly(true)
+    } else {
+      if (firstAirline) {
+        setBookingType(3)
+      } else {
+        setBookingType(1)
+      }
+    }
+  })
 
   const myArrow = ({ type, onClick, isEdge }) => {
     const pointer =
@@ -604,13 +658,24 @@ const AdressFormwithoutReactMemo = ({
       </Button>
     )
   }
+  const [alignment, setAlignment] = React.useState("web")
+  const [AMPM, setAMPM] = React.useState("")
+
+  const handleChangeAMPM = (event, newAlignment) => {
+    if (newAlignment !== null) {
+      setAlignment(newAlignment)
+    }
+    setAMPM(event.target.textContent)
+    // console.log(event.target.textContent)
+  }
   const [triggerToTimePicker, setTriggerToTimePicker] = useState(false)
   var eventCount = 0
   const inputStyle = {
-    WebkitBoxShadow: '0 0 0 1000px black inset',
-    height: '0px',
+    WebkitBoxShadow: "0 0 0 1000px black inset",
+    height: "0px",
   }
-  const isMobile = useMediaQuery('(max-width:530px)')
+  console.log(hourlyRedux)
+  const isMobile = useMediaQuery("(max-width:530px)")
 
   return (
     <Grid item>
@@ -626,10 +691,10 @@ const AdressFormwithoutReactMemo = ({
               redBorderOnSubmit2={redBorderOnSubmit2}
             />
           </Grid>
-          <Grid container justify='center'>
+          <Grid container justify="center">
             <Grid
               container
-              direction='column'
+              direction="column"
               spacing={2}
               className={classes.contentContainer}
             >
@@ -641,15 +706,15 @@ const AdressFormwithoutReactMemo = ({
                       : classes.redBorderForAirlinesDefault
                   }
                   style={{
-                    marginLeft: '8px',
-                    marginRight: '8px',
-                    marginTop: '6px',
-                    marginBottom: '5px',
+                    marginLeft: "8px",
+                    marginRight: "8px",
+                    marginTop: "6px",
+                    marginBottom: "5px",
                   }}
                 >
                   <Grid item>
                     <Autocomplete
-                      id='combo-box-demo'
+                      id="combo-box-demo"
                       options={airlines}
                       defaultValue={null}
                       autoHighlight
@@ -667,7 +732,7 @@ const AdressFormwithoutReactMemo = ({
                       )}
                       renderInput={(params) => {
                         params.InputProps.startAdornment = (
-                          <InputAdornment position='start'>
+                          <InputAdornment position="start">
                             <PlaneIcon />
                           </InputAdornment>
                         )
@@ -675,16 +740,16 @@ const AdressFormwithoutReactMemo = ({
                           <TextField
                             {...params}
                             fullWidth
-                            placeholder='Airlines'
+                            placeholder="Airlines"
                             className={classes.airLinesInput}
                             style={{
-                              height: '40px',
+                              height: "40px",
 
-                              backgroundColor: 'black',
-                              boxShadow: '0px 5px 30px rgba(0, 0, 0, 0.1)',
-                              paddingLeft: '10px',
-                              paddingRight: '10px',
-                              borderRadius: '0',
+                              backgroundColor: "black",
+                              boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
+                              paddingLeft: "10px",
+                              paddingRight: "10px",
+                              borderRadius: "0",
                             }}
                             InputProps={{
                               ...params.InputProps,
@@ -703,31 +768,31 @@ const AdressFormwithoutReactMemo = ({
                           ? setAirlineId(newValue.id)
                           : setAirlineId(null)
                       }}
-                      name='airlines'
+                      name="airlines"
                     />
                   </Grid>
-                  <Grid item style={{ marginTop: '12px' }}>
+                  <Grid item style={{ marginTop: "12px" }}>
                     <Grid
                       container
-                      direction='row'
-                      justify='space-between'
-                      alignItems='center'
+                      direction="row"
+                      justify="space-between"
+                      alignItems="center"
                     >
-                      <Grid item style={{ width: '50%' }}>
+                      <Grid item style={{ width: "50%" }}>
                         <CustomFormInput
-                          name='flightNumber'
-                          variant='outlined'
-                          placeholder='Flight number'
+                          name="flightNumber"
+                          variant="outlined"
+                          placeholder="Flight number"
                           className={classes.flightNumberInput}
                           style={{
-                            height: '40px',
+                            height: "40px",
                             // border: "none",
-                            backgroundColor: 'black',
-                            boxShadow: '0px 5px 30px rgba(0, 0, 0, 0.1)',
-                            width: '94%',
-                            marginBottom: '0px',
-                            marginTop: '0px',
-                            borderRadius: '0',
+                            backgroundColor: "black",
+                            boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
+                            width: "94%",
+                            marginBottom: "0px",
+                            marginTop: "0px",
+                            borderRadius: "0",
                           }}
                           defaultValue={null}
                           value={flightNumber}
@@ -740,31 +805,54 @@ const AdressFormwithoutReactMemo = ({
                               notchedOutline: classes.noBorder,
                             },
                             startAdornment: (
-                              <InputAdornment position='start'>
+                              <InputAdornment position="start">
                                 <Ticket />
                               </InputAdornment>
                             ),
                           }}
                         />
                       </Grid>
-                      <Grid item style={{ width: '43%' }}>
+                      <Grid item style={{ width: "43%" }}>
                         <Grid
                           container
-                          direction='row'
-                          alignItems='center'
-                          justify='space-between'
+                          direction="row"
+                          alignItems="center"
+                          justify="space-between"
                         >
                           <Grid item>
                             <Typography
-                              style={{ color: 'white', fontSize: '15px' }}
+                              style={{ color: "white", fontSize: "15px" }}
                             >
-                              {'Meet & Greet'}
+                              {"Meet & Greet"}
                             </Typography>
                           </Grid>
                           <Grid item>
                             <AntSwitch
-                              onClick={() => setIsGateMeeting(!isGateMeeting)}
-                              color='primary'
+                              onClick={() => {
+                                if (gateMeeting == false) {
+                                  // setIsGateMeeting(true)
+                                  setGateMeetingRedux(true)
+                                  setIsGateMeeting(true)
+                                  setIsAirportPickupIncludedLocalState(true)
+                                  console.log("true")
+                                } else {
+                                  // setIsGateMeeting(false)
+                                  setGateMeetingRedux(false)
+                                  setIsGateMeeting(false)
+                                  setIsAirportPickupIncludedLocalState(false)
+                                  console.log("false")
+                                }
+                                // setIsGateMeeting(!isGateMeeting)
+                                // setTimeout(() => {
+                                //   console.log(isGateMeeting)
+                                //   if (isGateMeeting == true) {
+                                //     setGateMeetingRedux(true)
+                                //   } else {
+                                //     setGateMeetingRedux(false)
+                                //   }
+                                // }, 1500)
+                              }}
+                              color="primary"
                             />
                           </Grid>
                         </Grid>
@@ -773,17 +861,17 @@ const AdressFormwithoutReactMemo = ({
                   </Grid>
                 </Grid>
               )}
-              <Grid item style={{ width: '100%' }}>
+              <Grid item style={{ width: "100%" }}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Grid
                     container
-                    direction='row'
-                    flexWrap='no-wrap'
-                    justify='space-between'
+                    direction="row"
+                    flexWrap="no-wrap"
+                    justify="space-between"
                   >
                     <Grid
                       item
-                      style={{ width: '47%' }}
+                      style={{ width: "47%" }}
                       className={
                         redBorderOnSubmitForDate
                           ? classes.noBorderRed
@@ -792,21 +880,21 @@ const AdressFormwithoutReactMemo = ({
                     >
                       {/* <ThemeProvider theme={materialTheme}> */}
                       <DateInputControl
-                        name='orderStartDate'
+                        name="orderStartDate"
                         // inputVariant="primary"
                         // label="Pick up Date"
                         // inputVariant="outlined"
                         style={{
-                          backgroundColor: 'black',
-                          paddingLeft: '15px',
-                          boxShadow: '4px 5px 30px rgba(0, 0, 0, 0.1)',
-                          borderRadius: '0',
-                          '&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded':
+                          backgroundColor: "black",
+                          paddingLeft: "15px",
+                          boxShadow: "4px 5px 30px rgba(0, 0, 0, 0.1)",
+                          borderRadius: "0",
+                          "&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded":
                             {
-                              zIndex: '1000000000000000000',
+                              zIndex: "1000000000000000000",
                             },
                         }}
-                        placeholder='Pick up Date'
+                        placeholder="Pick up Date"
                         defaultValue={null}
                         disablePast
                         fullWidth
@@ -830,10 +918,10 @@ const AdressFormwithoutReactMemo = ({
                           disableUnderline: true,
                           startAdornment: (
                             <InputAdornment
-                              position='start'
+                              position="start"
                               style={{
-                                marginRight: '10px',
-                                marginLeft: '-3px',
+                                marginRight: "10px",
+                                marginLeft: "-3px",
                               }}
                             >
                               <DateIcon />
@@ -846,7 +934,7 @@ const AdressFormwithoutReactMemo = ({
                     </Grid>
                     <Grid
                       item
-                      style={{ width: '47%' }}
+                      style={{ width: "47%" }}
                       InputProps={{
                         classes: {
                           root: classes.inputTimehover,
@@ -854,54 +942,119 @@ const AdressFormwithoutReactMemo = ({
                         },
                       }}
                     >
+                      {/* <CustomMaskInput
+                        name="orderStartTime"
+                        mask="99:99"
+                        autoComplete="off"
+                      >
+                        {(inputProps) => (
+                          <TextField
+                            {...inputProps}
+                            variant="outlined"
+                            placeholder="hh:mm"
+                            autoComplete="off"
+                            fullWidth
+                            style={{ borderRadius: "0px" }}
+                            InputProps={{
+                              classes: {
+                                root: classes.inputDateTime,
+                                input: classes.input, // class name, e.g. `classes-nesting-root-x`
+                                notchedOutline: redBorderOnSubmitForTime
+                                  ? classes.noBorderRed
+                                  : classes.noBorderDefault,
+                              },
+                              startAdornment: (
+                                <InputAdornment
+                                  position="start"
+                                  style={{
+                                    marginRight: "10px",
+                                    marginLeft: "-3px",
+                                  }}
+                                >
+                                  <ClockIcon />
+                                </InputAdornment>
+                              ),
+                              endAdornment: (
+                                <>
+                                  <ToggleButtonGroup
+                                    color="primary"
+                                    value={alignment}
+                                    exclusive
+                                    onChange={handleChangeAMPM}
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      marginRight: "-8px",
+                                    }}
+                                  >
+                                    <ToggleButton
+                                      value="AM"
+                                      className={classes.rootToggleButton}
+                                      style={{
+                                        width: "26px",
+                                        height: "20px",
+                                        fontSize: "13px",
+                                        paddingTop: "0px",
+                                        paddingBottom: "0px",
+                                      }}
+                                      onClick={(e) => {}}
+                                    >
+                                      AM
+                                    </ToggleButton>
+                                    <ToggleButton
+                                      value="PM"
+                                      className={classes.rootToggleButton}
+                                      style={{
+                                        width: "26px",
+                                        height: "20px",
+                                        marginLeft: "2px",
+                                        fontSize: "13px",
+                                        paddingTop: "0px",
+                                        paddingBottom: "0px",
+                                      }}
+                                    >
+                                      PM
+                                    </ToggleButton>
+                                  </ToggleButtonGroup>
+                                </>
+                              ),
+                            }}
+                          />
+                        )}
+                      </CustomMaskInput> */}
+
                       <div
                         style={{
-                          position: 'absolute',
-                          marginTop: '10px',
-                          marginLeft: '10px',
-                          marginRight: '10px',
-                          zIndex: '11',
+                          position: "absolute",
+                          marginTop: "10px",
+                          marginLeft: "10px",
+                          marginRight: "10px",
+                          zIndex: "11",
                         }}
                       >
                         <ClockIcon />
                       </div>
-                      <div className='scrolling'>
+                      <div className="scrolling">
                         <TimeInputControl
                           getPopupContainer={(trigger) => trigger.parentNode}
-                          name='orderStartTime'
+                          name="orderStartTime"
                           use12Hours={true}
-                          placeholder='Pick up Time'
-                          format='h:mm A'
+                          placeholder="Pick up Time"
+                          format="h:mm A"
                           allowClear={false}
                           inputReadOnly={isMobile ? true : false}
                           // open={timePickerOpened ? true : false}
                           needsConfirmation={false}
                           showNow={false}
-                          // onChange={() => {
-                          //   setBackgroundScrollStopForTimePicker(true)
-                          // }}
-                          // onClick={(e) => {
-                          //   setBackgroundScrollStopForTimePicker(true)
-                          //   // setTimePickerOpened(true)
-                          // }}
-                          // onOk={(e) => {
-                          //   setBackgroundScrollStopForTimePicker(false)
-                          // }}
-                          // onOpen={() => {
-                          //   setBackgroundScrollStopForTimePicker(true)
-                          // }}
-                          // popupStyle={{
-                          //   color: "red",
-                          // }}
-                          // open={openTimePicker}
-                          showAction={['click', 'focus']}
-                          dropdownStyle={{ position: 'fixed' }}
+                          showAction={["click", "focus"]}
+                          dropdownStyle={{ position: "fixed" }}
                           onOpenChange={(isOpen) => {
                             setOpenTimePicker(true)
                             if (isOpen) {
                               setTimeout(() => {
                                 const startInput = document.querySelector(
-                                  '.ant-picker-content'
+                                  ".ant-picker-content"
                                 )
                                 startInput.focus()
                               }, 100)
@@ -909,90 +1062,20 @@ const AdressFormwithoutReactMemo = ({
                               return null
                             }
                           }}
-                          // onSelect={(event) => {
-                          //   // console.log(event._d)
-
-                          //   if (eventCount == 2) {
-                          //     setOpenTimePicker(false)
-                          //     // setTriggerToTimePicker(true)
-                          //     // return event._d
-                          //   } else {
-                          //     eventCount++
-                          //   }
-                          //   // setOpenTimePicker(false)
-                          // }}
-                          // // defaultValue={123}
-                          // // ok={openTimePicker}
-                          // onOk={() => {
-                          //   if (triggerToTimePicker == true) {
-                          //     return true
-                          //   }
-                          // }}
                           style={{
-                            zIndex: '10',
-                            paddingLeft: '36px',
+                            zIndex: "10",
+                            paddingLeft: "36px",
                             border:
-                              redBorderOnSubmitForTime && '1px solid #db5858',
-                            borderRadius: '0',
-                            // backgroundColor: "#191929",
-                            // width: "190px",
-                            // height: "41px",
-                            // borderRadius: "9px",
+                              redBorderOnSubmitForTime && "1px solid #db5858",
+                            borderRadius: "0",
                           }}
                         ></TimeInputControl>
-                        {/* <button
-                          style={{
-                            width: "158px",
-                            height: "43px",
-                            background: "green",
-                            position: "absolute",
-                            zIndex: "12",
-                            right: "0px",
-                            background: "transparent",
-                            border: "transparent",
-                          }}
-                          onClick={(e) => {
-                            e.preventDefault()
-                            // setBackgroundScrollStopForTimePicker(true)
-                            setTimePickerOpened(true)
-                          }}
-                        ></button> */}
                       </div>
-                      {/* <TimeInputControl
-                        // value={selectedDate}
-                        // onChange={handleDateChangeFunc}
-                        name="orderStartTime"
-                        inputVariant="outlined"
-                        style={{
-                          backgroundColor: "#191929",
-                          height: "40px",
-                        }}
-                        // label="Pick up Time"
-                        placeholder="Pick up Time"
-                        defaultValue={null}
-                        disablePast
-                        fullWidth
-                        InputProps={{
-                          classes: {
-                            root: classes.inputDateTime,
-                            input: classes.input, // class name, e.g. `classes-nesting-root-x`
-                            notchedOutline: redBorderOnSubmitForTime
-                              ? classes.noBorderRed
-                              : classes.noBorderDefault,
-                          },
-                          disableUnderline: true,
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <ClockIcon />
-                            </InputAdornment>
-                          ),
-                        }}
-                      /> */}
                     </Grid>
                   </Grid>
                 </MuiPickersUtilsProvider>
               </Grid>
-              <Grid item style={{ width: '100%' }}>
+              <Grid item style={{ width: "100%" }}>
                 <div
                   className={
                     redBorderOnSubmitForPassengers
@@ -1007,44 +1090,68 @@ const AdressFormwithoutReactMemo = ({
                   />
                 </div>
               </Grid>
-              <Grid item style={{ width: '100%' }}>
+              <Grid item style={{ width: "100%" }}>
                 <Grid
                   container
-                  direction='row'
-                  justify='space-between'
-                  alignItems='center'
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
                 >
                   <Grid item>
                     <Grid
                       container
-                      direction='row'
-                      alignItems='center'
-                      style={{ paddingLeft: '-12px' }}
+                      direction="row"
+                      alignItems="center"
+                      style={{ paddingLeft: "-12px" }}
                     >
                       <HourlyIcon></HourlyIcon>
-                      <Typography style={{ color: 'white', fontSize: '14px' }}>
+                      <Typography style={{ color: "white", fontSize: "14px" }}>
                         Hourly
                       </Typography>
                     </Grid>
                   </Grid>
                   <AntSwitch
-                    color='primary'
+                    color="primary"
                     // disabled={disableHourly}
                     checked={hourly}
                     onClick={() => {
+                      // if (hourly == false) {
+                      //   // // setIsGateMeeting(true)
+                      //   // setGateMeetingRedux(true)
+                      //   setHourly(true)
+                      //   // hourly = true
+                      //   console.log("true")
+                      //   console.log(hourly)
+                      // } else {
+                      //   // setIsGateMeeting(false)
+                      //   // setGateMeetingRedux(false)
+                      //   setHourly(true)
+                      //   // hourly = false
+                      //   console.log("false")
+                      //   console.log(hourly)
+                      // }
+                      if (!hourlyRedux) {
+                        // setIsGateMeeting(true)
+                        setHourlyRedux(true)
+                        // console.log("true")
+                      } else {
+                        // setIsGateMeeting(false)
+                        setHourlyRedux(false)
+                        // console.log("false")
+                      }
                       setHourly(!hourly)
-                      setHourlyRedux()
+
+                      // setHourlyRedux()
                       // hourly ? setBookingType(2) : setBookingType(1)
                     }}
                   />
                 </Grid>
               </Grid>
-              <Grid item style={{ width: '100%' }}>
+              <Grid item style={{ width: "100%" }}>
                 {hourly === true && (
                   <Grid item>
                     <Hours
                       hoursState={formData.hours}
-                      setHourly={setHourly}
                       hourly={hourly}
                       hoursAddressForm={hoursAddressForm}
                       setHoursAddressForm={setHoursAddressForm}
@@ -1056,7 +1163,7 @@ const AdressFormwithoutReactMemo = ({
                 <Grid item>
                   <Typography
                     className={classes.preferences}
-                    style={{ color: 'white' }}
+                    style={{ color: "white" }}
                   >
                     Preferences
                   </Typography>
@@ -1064,10 +1171,10 @@ const AdressFormwithoutReactMemo = ({
                 <Grid item>
                   <Grid
                     container
-                    direction='row'
-                    justify='space-between'
-                    alignItems='center'
-                    style={{ width: '100%' }}
+                    direction="row"
+                    justify="space-between"
+                    alignItems="center"
+                    style={{ width: "100%" }}
                     className={
                       redBorderOnSubmitForCarType
                         ? classes.carContainerRed
@@ -1139,20 +1246,20 @@ const AdressFormwithoutReactMemo = ({
                                 selected: classes.active,
                                 root: classes.listRoot,
                               }}
-                              name='carsValidation'
+                              name="carsValidation"
                             >
                               <Grid
                                 container
-                                direction='column'
+                                direction="column"
                                 // justify="center"
-                                alignItems='center'
+                                alignItems="center"
                                 className={classes.carItemContainer}
                               >
                                 <Grid item>
                                   <Typography
                                     className={classes.carFont}
                                     noWrap
-                                    variant='body2'
+                                    variant="body2"
                                   >
                                     {car.name}
                                   </Typography>
@@ -1162,7 +1269,7 @@ const AdressFormwithoutReactMemo = ({
                                   className={classes.carImageContainer}
                                 >
                                   <img
-                                    alt='carImage'
+                                    alt="carImage"
                                     src={car.imageUrl}
                                     className={
                                       indexOfEachCar !== 2
@@ -1180,16 +1287,16 @@ const AdressFormwithoutReactMemo = ({
                   </Grid>
                 </Grid>
                 <Grid item className={classes.submitButton}>
-                  <Grid container justify='center'>
+                  <Grid container justify="center">
                     <Button
-                      type='submit'
-                      color='primary'
-                      variant='contained'
+                      type="submit"
+                      color="primary"
+                      variant="contained"
                       fullWidth
                       className={classes.buttonSelf}
                       style={{
-                        height: '40px',
-                        borderRadius: '0',
+                        height: "40px",
+                        borderRadius: "0",
                       }}
                       // endIcon={<ForwardArrowIcon />}
                       // disabled={
@@ -1202,7 +1309,7 @@ const AdressFormwithoutReactMemo = ({
                       // }
                     >
                       <Typography
-                        variant='body2'
+                        variant="body2"
                         className={classes.typographyForButton}
                       >
                         Next step
@@ -1227,6 +1334,8 @@ const mapStateToProps = (state) => {
     pageSize: state.cars.pageSize,
     formData: state.formData,
     resetInputs: state.resetWidgetInputs.resetInputs,
+    gateMeeting: state.gateMeeting.isGateMeeting,
+    hourlyRedux: state.hourlyRedux.hourlyRedux,
   }
 }
 
@@ -1235,4 +1344,5 @@ export default connect(mapStateToProps, {
   getCompanyCars,
   setFormData,
   setHourlyRedux,
+  setGateMeetingRedux,
 })(AdressForm)

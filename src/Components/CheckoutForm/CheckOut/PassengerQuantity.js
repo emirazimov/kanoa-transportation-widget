@@ -82,6 +82,7 @@ export default React.memo(function PassengerQuantity({
               size="1"
               style={{
                 // pointerEvents: "none",
+                minWidth: "30px",
                 marginRight: "3px",
                 marginBottom: "4px",
                 backgroundColor: "transparent",

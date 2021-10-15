@@ -1,58 +1,82 @@
-import { makeStyles } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import { makeStyles } from "@material-ui/core"
+import TextField from "@material-ui/core/TextField"
+import Autocomplete from "@material-ui/lab/Autocomplete"
 import {
   DatePicker,
   DateTimePicker,
   // TimePicker,
   // KeyboardTimePicker,
-} from '@material-ui/pickers'
-import 'date-fns'
-import React from 'react'
-import { Controller, useFormContext } from 'react-hook-form'
-import InputMask from 'react-input-mask'
-import { PlacesAutocomplete } from 'react-places-autocomplete'
-import { TimePicker } from 'antd'
-import 'antd/dist/antd.css'
-import './index.css'
+} from "@material-ui/pickers"
+import "date-fns"
+import React from "react"
+import { Controller, useFormContext } from "react-hook-form"
+import InputMask from "react-input-mask"
+import { PlacesAutocomplete } from "react-places-autocomplete"
+import { TimePicker } from "antd"
+import "antd/dist/antd.css"
+import "./index.css"
 
 const useStyles = makeStyles((theme) => ({
   inputRoot: {
-    height: '40px',
-    background: 'black',
-    fontSize: '14px',
+    height: "40px",
+    background: "black",
+    fontSize: "14px",
 
-    '& input::placeholder': {
-      color: 'grey',
+    "& input::placeholder": {
+      color: "grey",
     },
-    borderRadius: '0',
-    boxShadow: '0px 5px 30px rgba(0, 0, 0, 0.1)',
-    color: 'white',
+    borderRadius: "0",
+    boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
+    color: "white",
+    // "&:-webkit-autofill": {
+    //   height: "0px",
+    //   border: "none",
+    //   borderRadius: "0px",
+    //   WebkitBoxShadow: "0 0 0 1000px black inset",
+    //   WebkitTextFillColor: "white",
+    // },
+    // "MuiOutlinediput-input:-webkit-autofill": {
+    //   WebkitTextFillColor: "white",
+    // },
   },
   noBorder: {
-    border: 'none',
+    border: "none",
+    // "&:-webkit-autofill": {
+    //   height: "0px",
+    //   border: "none",
+    //   borderRadius: "0px",
+    //   WebkitBoxShadow: "0 0 0 1000px black inset",
+    //   WebkitTextFillColor: "white",
+    // },
+    // "MuiOutlinediput-input:-webkit-autofill": {
+    //   WebkitTextFillColor: "white",
+    // },
   },
 
   input: {
-    '&::placeholder': {
-      color: 'grey',
-      opacity: '1',
-      fontSize: '14px',
+    "&::placeholder": {
+      color: "grey",
+      opacity: "1",
+      fontSize: "14px",
     },
-    '&:-webkit-autofill': {
-      height: '0px',
-      border: 'none',
-      borderRadius: '0px',
-      WebkitBoxShadow: '0 0 0 1000px white inset',
-      WebkitTextFillColor: 'black',
+    "&:-webkit-autofill": {
+      height: "0px",
+      border: "none",
+      borderRadius: "0px",
+      WebkitBoxShadow: "0 0 0 1000px black inset",
+      WebkitTextFillColor: "white",
+    },
+    "MuiOutlinediput-input:-webkit-autofill": {
+      WebkitTextFillColor: "white",
     },
   },
-  '&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded':
+
+  "&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded":
     {
-      zIndex: '1000000000000000000',
+      zIndex: "1000000000000000000",
     },
   modalRoot: {
-    zIndex: '1000000000000000000',
+    zIndex: "1000000000000000000",
   },
 }))
 
@@ -80,8 +104,9 @@ export const CustomFormInputForPayment = ({
   const { control } = useFormContext()
   const classes = useStyles()
   const inputStyle = {
-    WebkitBoxShadow: '0 0 0 1000px black inset',
-    height: '0px',
+    // WebkitBoxShadow: "0 0 0 1000px black inset",
+    // height: "0px",
+    // WebkitTextFillColor: "white",
   }
   return (
     <Controller
@@ -98,7 +123,7 @@ export const CustomFormInputForPayment = ({
           input: classes.input,
         },
       }}
-      style={{ height: '40px' }}
+      style={{ height: "40px" }}
       {...props}
     />
   )
@@ -174,7 +199,7 @@ export const DateInputControl = ({ name, required, ...props }) => {
           dialogRoot: classes.modalRoot,
         },
       }}
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: "pointer" }}
       {...props}
       control={control}
     ></Controller>
@@ -188,7 +213,28 @@ export const TimeInputControl = ({ name, required, ...props }) => {
       as={TimePicker}
       name={name}
       required={required}
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: "pointer" }}
+      {...props}
+      control={control}
+    ></Controller>
+  )
+}
+
+export const TimeInputControlNewOne = ({
+  defaultValue,
+  name,
+  required,
+  ...props
+}) => {
+  const { control } = useFormContext()
+
+  return (
+    <Controller
+      as={TextField}
+      name={name}
+      required={required}
+      style={{ cursor: "pointer" }}
+      defaultValue={defaultValue}
       {...props}
       control={control}
     ></Controller>
