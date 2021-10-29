@@ -17,7 +17,6 @@
     "axios": "^0.21.1",
     "date-fns": "^2.21.1",
     "google-maps-react": "^2.0.6",
-    "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-aspect-ratio": "^1.0.50",
     "react-device-detect": "^1.17.0",
