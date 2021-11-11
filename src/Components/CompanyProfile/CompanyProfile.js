@@ -1,14 +1,17 @@
 import React, { useEffect } from "react"
 import { connect } from "react-redux"
-import { getCompanyProfile } from "../../Redux/company-profile-reducer"
+import {
+  getCompanyProfile,
+  setGotAddressError,
+} from "../../Redux/company-profile-reducer"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import { CloseWidgetIcon } from "../../assets/icons"
 import Divider from "@material-ui/core/Divider"
-import { isMobile } from "react-device-detect"
+// import { isMobile } from "react-device-detect"
 import { Preloader } from "../Helpers/Preloader"
-import AppBar from "@material-ui/core/AppBar"
+// import AppBar from "@material-ui/core/AppBar"
 import { useMediaQuery } from "@material-ui/core"
 import {
   setResetWidgetInputs,
@@ -73,6 +76,7 @@ const CompanyProfile = ({
   setBackgroundScrollStop,
   resetInputs,
   setResetWidgetInputs,
+  setGotAddressError,
 }) => {
   const classes = useStyles()
 
@@ -141,7 +145,8 @@ const CompanyProfile = ({
                   setExpanded()
                   setActiveStep(0)
                   setBackgroundScrollStop(false)
-                  setResetWidgetInputs()
+                  setResetWidgetInputs(true)
+                  setGotAddressError(false)
                 }}
               >
                 <CloseWidgetIcon />
@@ -171,4 +176,5 @@ const mapDispatchToProps = {}
 export default connect(mapStateToProps, {
   getCompanyProfile,
   setResetWidgetInputs,
+  setGotAddressError,
 })(CompanyProfile)

@@ -36,9 +36,7 @@ export default createMuiTheme({
     //     zIndex: "1000000000000000000",
     //   },
     // },
-    // MuiDialogContent: {
-    //   root: { zIndex: "1000000000000000000" },
-    // },
+
     MuiDialogActions: {
       root: {
         display: "none",
@@ -96,6 +94,18 @@ export default createMuiTheme({
     MuiOutlinedInput: {
       notchedOutline: {
         borderColor: "#C19815",
+      },
+    },
+
+    MuiDialog: {
+      root: { zIndex: "1000000001 !important" },
+    },
+    MuiOutlinedInput: {
+      input: {
+        "&:-webkit-autofill": {
+          "-webkit-box-shadow": "0 0 0 100px #000 inset !important",
+          "-webkit-text-fill-color": "#fff",
+        },
       },
     },
   },

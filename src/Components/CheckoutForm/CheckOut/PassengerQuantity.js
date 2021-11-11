@@ -1,35 +1,45 @@
 import { useMediaQuery } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
-import React, { memo, useState } from "react"
+import React from "react"
 import { useFormContext } from "react-hook-form"
 import {
   MinusIcon,
-  NumberOfPassengers,
+  // NumberOfPassengers,
   NumberOfPassengersIcon,
   PlusIcon,
 } from "../../../assets/icons"
+import "./index.css"
 
 export default React.memo(function PassengerQuantity({
   passengersqState,
   setPassengers,
   passengers,
+  passengersQuantityForBackStep,
+  setPassengersQuantityForBackStep,
+  resetInputs,
 }) {
   const { register } = useFormContext()
 
   const onDecrease = () => {
-    if (passengers === 0) {
+    if (passengersQuantityForBackStep === 0) {
       return
     }
+    let progress = passengersQuantityForBackStep - 1
     setPassengers((passengers) => passengers - 1)
+    setPassengersQuantityForBackStep(progress)
   }
-  const onIncrease = () => {
-    if (passengers === 14) {
+  const onIncrease = (e) => {
+    if (passengersQuantityForBackStep === 14) {
       return
     }
+    let progress = passengersQuantityForBackStep + 1
     setPassengers((passengers) => passengers + 1)
-  }
+    setPassengersQuantityForBackStep(progress)
 
+    console.log(passengersQuantityForBackStep)
+  }
+  // console.log(passengersQuantityForBackStep)
   //   React.useEffect(() => {
   //     setPassengers(parseInt(passengersqState))
   //   }, [passengersqState])
@@ -77,8 +87,9 @@ export default React.memo(function PassengerQuantity({
               name="passengersQuantity"
               onChange={(e) => {
                 setPassengers(e.target.value)
+                setPassengersQuantityForBackStep(e.target.value)
               }}
-              value={passengers}
+              value={passengersQuantityForBackStep}
               size="1"
               style={{
                 // pointerEvents: "none",

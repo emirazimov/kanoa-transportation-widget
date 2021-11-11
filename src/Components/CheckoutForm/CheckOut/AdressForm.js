@@ -6,7 +6,7 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import { makeStyles } from "@material-ui/core/styles"
 import Switch from "@material-ui/core/Switch"
 import Typography from "@material-ui/core/Typography"
-import { yupResolver } from "@hookform/resolvers/yup"
+// import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
@@ -17,11 +17,14 @@ import { placesApi } from "../../../api/api"
 import {
   ClockIcon,
   DateIcon,
-  ForwardArrowIcon,
+  // ForwardArrowIcon,
   HourlyIcon,
   LeftArrowForAdressForm,
+  MeetAndGreetIcon,
+  NumberOfPassengersIcon,
   PlaneIcon,
   RightArrowForAdressForm,
+  SafetySeatIcon,
   Ticket,
 } from "../../../assets/icons"
 import { getCarsByType } from "../../../Redux/car-reducer"
@@ -29,11 +32,11 @@ import GoogleMap from "../../GoogleMap/GoogleMap"
 import { getCompanyCars } from "./../../../Redux/car-reducer"
 import {
   CustomFormInput,
-  CustomMaskInput,
-  DataInputControl,
+  // CustomMaskInput,
+  // DataInputControl,
   DateInputControl,
-  TimeInputControl,
-  TimeInputControlNewOne,
+  // TimeInputControl,
+  // TimeInputControlNewOne,
 } from "./CustomFormInput"
 import Hours from "./Hours"
 import PassengerQuantity from "./PassengerQuantity"
@@ -41,19 +44,30 @@ import { withStyles } from "@material-ui/styles"
 // import Carousel, { Dots, slidesToShowPlugin } from '@brainhubeu/react-carousel';
 import Carousel, { consts } from "react-elastic-carousel"
 // import Carousel from "react-material-ui-carousel";
-import Tooltip from "@material-ui/core/Tooltip"
-import { setFormData } from "./../../../Redux/form-reducer"
+// import Tooltip from "@material-ui/core/Tooltip"
+import {
+  setBoosterSeatCount,
+  setDateForDefaultValue,
+  setTimeForDefaultValue,
+  setTimeForDefaultValueAMPM,
+  setTimeForDefaultValueAlignment,
+  setPassengersQuantityForBackStep,
+  setFormData,
+  setSafetySeatCount,
+} from "./../../../Redux/form-reducer"
 // import "@brainhubeu/react-carousel/lib/style.css"
-import { createMuiTheme } from "@material-ui/core"
-import { ThemeProvider } from "@material-ui/styles"
-import Blue from "@material-ui/core/colors/blue"
-import lime from "@material-ui/core/colors/lime"
-import { Popover, TimePicker } from "antd"
-import "antd/dist/antd.css"
+// import { createMuiTheme } from "@material-ui/core"
+// import { ThemeProvider } from "@material-ui/styles"
+// import Blue from "@material-ui/core/colors/blue"
+// import lime from "@material-ui/core/colors/lime"
+// import { Popover, TimePicker } from "antd"
+// import "antd/dist/antd.css"
 import "./index.css"
 import { setHourlyRedux } from "../../../Redux/hourly-reducer"
 import { setGateMeetingRedux } from "../../../Redux/gate-meeting-reducer"
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab"
+import SafetySeat from "./SafetySeat"
+import ReactInputMask from "react-input-mask"
 
 const useStyles = makeStyles((theme) => ({
   contentContainer: {
@@ -265,6 +279,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#C6AD99",
   },
   option: {
+    fontSize: "15px",
     backgroundColor: "black",
     "&:hover": {
       backgroundColor: "#C6AD99",
@@ -370,10 +385,17 @@ const AdressFormwithoutReactMemo = ({
   setHourlyRedux,
   setGateMeetingRedux,
   gateMeeting,
-  hourlyRedux,
+  hourlyAndSeatsRedux,
+  setSafetySeatCount,
+  setBoosterSeatCount,
   backgroundScrollStopForTimePicker,
   setBackgroundScrollStopForTimePicker,
   resetInputs,
+  setDateForDefaultValue,
+  setTimeForDefaultValue,
+  setTimeForDefaultValueAMPM,
+  setTimeForDefaultValueAlignment,
+  setPassengersQuantityForBackStep,
 }) => {
   const classes = useStyles()
   console.log("AdressFrom")
@@ -398,6 +420,16 @@ const AdressFormwithoutReactMemo = ({
   const [redBorderOnSubmitForDate, setRedBorderOnSubmitForDate] =
     useState(false)
   const [redBorderOnSubmitForTime, setRedBorderOnSubmitForTime] =
+    useState(false)
+  const [redBorderOnSubmitForTime2, setRedBorderOnSubmitForTime2] =
+    useState(false)
+  const [redBorderOnSubmitForTime3, setRedBorderOnSubmitForTime3] =
+    useState(false)
+  const [redBorderOnSubmitForTime4, setRedBorderOnSubmitForTime4] =
+    useState(false)
+  const [redBorderOnSubmitForTime5, setRedBorderOnSubmitForTime5] =
+    useState(false)
+  const [redBorderOnSubmitForTime6, setRedBorderOnSubmitForTime6] =
     useState(false)
   const [redBorderOnSubmitForCarType, setRedBorderOnSubmitForCarType] =
     useState(false)
@@ -460,15 +492,27 @@ const AdressFormwithoutReactMemo = ({
         page: pageSize,
         typeId: carSelectionID,
         bookingType: bookingType,
-        passengersQuantity: passengers,
+        passengersQuantity: formData.passengersQuantityForBackStep,
         isAirportPickupIncluded: isAirportPickupIncludedLocalState,
+        boosterSeatCount: boosterSeat,
+        safetySeatCount: childSafetySeat,
       })
+      setSafetySeatCount(childSafetySeat)
+      setBoosterSeatCount(boosterSeat)
+      setDateForDefaultValue(
+        new Date(data.orderStartDate).toLocaleDateString("en-US")
+      )
+      // setTimeForDefaultValue(time)
+      // setTimeForDefaultValueAMPM(AMPM)
+      // setTimeForDefaultValueAlignment(alignment)
 
-      const forRes = data.orderStartDate.toLocaleDateString("en-US")
-      const forRes2 = data.orderStartTime._d.toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "numeric",
-      })
+      const forRes = new Date(data.orderStartDate).toLocaleDateString("en-US")
+      const forRes2 = time + ` ${AMPM}`
+
+      // ._d.toLocaleTimeString("en-US", {
+      //   hour: "numeric",
+      //   minute: "numeric",
+      // })
 
       // + ` ${AMPM}`
       const resData = {
@@ -496,6 +540,7 @@ const AdressFormwithoutReactMemo = ({
           typeId: carSelectionID,
           bookingType: bookingType,
           passengersQuantity: passengers,
+          boosterSeatCount: boosterSeat,
         }
       )
       next()
@@ -538,11 +583,15 @@ const AdressFormwithoutReactMemo = ({
       destinations[0].rideCheckPoint &&
       destinations[1].rideCheckPoint &&
       data.orderStartDate &&
-      data.orderStartTime &&
+      (time || formData.timeForDefaultValue) &&
+      (firstTimeHalf?.[0] >= "0" || formData.timeForDefaultValue) &&
+      (firstTimeHalf?.[1] >= "0" || formData.timeForDefaultValue) &&
+      (secondTimeHalf?.[0] >= "0" || formData.timeForDefaultValue) &&
+      (secondTimeHalf?.[1] >= "0" || formData.timeForDefaultValue) &&
+      // false &&
       carSelectionID &&
-      passengers
-      // &&
-      // AMPM
+      (passengers || formData.passengersQuantityForBackStep) &&
+      (AMPM || formData?.timeForDefaultValueAMPM?.ampm)
     ) {
       if (isAirline) {
         if (!airlineId) {
@@ -565,27 +614,82 @@ const AdressFormwithoutReactMemo = ({
       } else {
         setRedBorderOnSubmit2(false)
       }
-      if (!data.orderStartDate?.toLocaleDateString("en-GB")) {
+      if (
+        !new Date(data.orderStartDate).toLocaleDateString("en-GB") ||
+        !formData.dateForDefaultValue
+      ) {
+        // if (
+        //   !new Date(data.orderStartDate).toLocaleDateString("en-GB") &&
+        //   !formData.dateForDefaultValue
+        // ) {
         setRedBorderOnSubmitForDate(true)
+        // }
       } else {
         setRedBorderOnSubmitForDate(false)
       }
-      if (!data.orderStartTime) {
-        setRedBorderOnSubmitForTime(true)
-      } else {
-        setRedBorderOnSubmitForTime(false)
-      }
-      // if (!AMPM) {
+      // if (!time) {
       //   setRedBorderOnSubmitForTime(true)
       // } else {
       //   setRedBorderOnSubmitForTime(false)
       // }
+      if (
+        (firstTimeHalf?.[0] <= "0" && firstTimeHalfRedux?.[0] <= "0") ||
+        (firstTimeHalf?.[0] <= "" && firstTimeHalfRedux?.[0] <= "0") ||
+        (firstTimeHalf?.[0] == undefined &&
+          firstTimeHalfRedux?.[0] <= undefined)
+      ) {
+        setRedBorderOnSubmitForTime2(true)
+      } else {
+        setRedBorderOnSubmitForTime2(false)
+      }
+      if (
+        (firstTimeHalf?.[1] <= "0" && firstTimeHalfRedux?.[1] <= "0") ||
+        (firstTimeHalf?.[1] <= "" && firstTimeHalfRedux?.[1] <= "") ||
+        (firstTimeHalf?.[1] == undefined &&
+          firstTimeHalfRedux?.[1] <= undefined)
+      ) {
+        setRedBorderOnSubmitForTime6(true)
+      } else {
+        setRedBorderOnSubmitForTime6(false)
+      }
+      if (
+        (secondTimeHalf2 <= "0" && secondTimeHalfRedux2 <= "0") ||
+        (secondTimeHalf2 <= "" && secondTimeHalfRedux2 <= "")
+      ) {
+        setRedBorderOnSubmitForTime3(true)
+      } else {
+        setRedBorderOnSubmitForTime3(false)
+      }
+
+      if (
+        (secondTimeHalf?.[0] <= "0" && secondTimeHalfRedux?.[0] <= "0") ||
+        (secondTimeHalf?.[0] <= "" && secondTimeHalfRedux?.[0] <= "")
+      ) {
+        setRedBorderOnSubmitForTime4(true)
+      } else {
+        setRedBorderOnSubmitForTime4(false)
+      }
+      if (
+        (secondTimeHalf?.[1] <= "0" && secondTimeHalfRedux?.[1] <= "0") ||
+        (secondTimeHalf?.[1] <= "" && secondTimeHalfRedux?.[1] <= "") ||
+        (secondTimeHalf?.[1] == undefined &&
+          secondTimeHalfRedux?.[1] <= undefined)
+      ) {
+        setRedBorderOnSubmitForTime5(true)
+      } else {
+        setRedBorderOnSubmitForTime5(false)
+      }
+      if (!AMPM && !formData?.timeForDefaultValueAMPM?.ampm) {
+        setRedBorderOnSubmitForTime(true)
+      } else {
+        setRedBorderOnSubmitForTime(false)
+      }
       if (carSelectionID) {
         setRedBorderOnSubmitForCarType(false)
       } else {
         setRedBorderOnSubmitForCarType(true)
       }
-      if (passengers) {
+      if (formData.passengersQuantityForBackStep) {
         setRedBorderOnSubmitForPassengers(false)
       } else {
         setRedBorderOnSubmitForPassengers(true)
@@ -595,6 +699,8 @@ const AdressFormwithoutReactMemo = ({
   const [openTimePicker, setOpenTimePicker] = useState(false)
   let firstAirline =
     destinations[0]?.rideCheckPoint.match(/(^|\W)Airport($|\W)/)
+  // let secondAirline =
+  //   destinations[1]?.rideCheckPoint.match(/(^|\W)Airport($|\W)/)
   // if (destinations[0]?.rideCheckPoint.match(/(^|\W)Airport($|\W)/)) {
   //   console.log("true")
   // } else {
@@ -641,6 +747,16 @@ const AdressFormwithoutReactMemo = ({
     }
   })
 
+  console.log(formData.dateForDefaultValue == true)
+  console.log(formData.timeForDefaultValueAMPM?.alignment)
+  console.log(formData.timeForDefaultValueAMPM?.ampm)
+  console.log(formData.timeForDefaultValue)
+  console.log(
+    // (firstTimeHalf?.[0] <= "0" && firstTimeHalfRedux?.[0] <= "0") ||
+    //   (firstTimeHalf?.[0] <= "" && firstTimeHalfRedux?.[0] <= "0") ||
+    firstTimeHalf?.[0] == undefined && firstTimeHalfRedux?.[0] <= undefined
+  )
+
   const myArrow = ({ type, onClick, isEdge }) => {
     const pointer =
       type === consts.PREV ? (
@@ -658,14 +774,22 @@ const AdressFormwithoutReactMemo = ({
       </Button>
     )
   }
+
+  const [safetySeat, setSafetySeat] = useState(false)
+
+  const [boosterSeat, setBoosterSeat] = useState(0)
+  const [childSafetySeat, setChildSafetySeat] = useState(0)
   const [alignment, setAlignment] = React.useState("web")
   const [AMPM, setAMPM] = React.useState("")
 
   const handleChangeAMPM = (event, newAlignment) => {
     if (newAlignment !== null) {
       setAlignment(newAlignment)
+      setTimeForDefaultValueAlignment(newAlignment)
     }
     setAMPM(event.target.textContent)
+    setTimeForDefaultValueAMPM(event.target.textContent)
+
     // console.log(event.target.textContent)
   }
   const [triggerToTimePicker, setTriggerToTimePicker] = useState(false)
@@ -674,8 +798,83 @@ const AdressFormwithoutReactMemo = ({
     WebkitBoxShadow: "0 0 0 1000px black inset",
     height: "0px",
   }
-  console.log(hourlyRedux)
+  console.log(hourlyAndSeatsRedux)
   const isMobile = useMediaQuery("(max-width:530px)")
+
+  const [time, setTime] = useState("")
+  const startsWithTwo = time[0] === "2"
+
+  const [timeMask, setTimeMask] = useState(false)
+
+  const handleInput = (event) => {
+    if (event.target.value == "0_:__") {
+      setTimeMask(true)
+    }
+    if (event.target.value == "1_:__") {
+      setTimeMask(false)
+    }
+    setTimeForDefaultValue(event.target.value)
+    setTime(event.target.value)
+    // const emir = "00:10"
+    // console.log(event.target.value)
+    // console.log(time)
+    // console.log(regexp.test(emir))
+    console.log(
+      event.target.value.match(/\d+/),
+      event.target.value.substr(event.target.value.indexOf(":")).match(/\d+/)
+    )
+  }
+
+  var firstTimeHalf = time
+    .substr(0, time.indexOf(":"))
+    .match(/\d+/)
+    ?.join()
+    ?.split("")
+  var secondTimeHalf = time
+    .substr(time.indexOf(":"))
+    .match(/\d+/)
+    ?.join()
+    ?.split("")
+  var secondTimeHalf2 = time.substr(time.indexOf(":")).match(/\d+/)
+
+  var firstTimeHalfRedux = formData?.timeForDefaultValue
+    ?.substr(0, formData?.timeForDefaultValue?.indexOf(":"))
+    ?.match(/\d+/)
+    ?.join()
+    ?.split("")
+  var secondTimeHalfRedux = formData?.timeForDefaultValue
+    ?.substr(formData?.timeForDefaultValue?.indexOf(":"))
+    ?.match(/\d+/)
+    ?.join()
+    ?.split("")
+  var secondTimeHalfRedux2 = formData?.timeForDefaultValue
+    ?.substr(formData?.timeForDefaultValue?.indexOf(":"))
+    ?.match(/\d+/)
+
+  const mask = [
+    /[0-2]/,
+    startsWithTwo ? /[0-3]/ : /[0-9]/,
+    ":",
+    /[0-5]/,
+    /[0-9]/,
+  ]
+
+  let formatChars = {
+    7: "[0-1]",
+    8: "[0-9]",
+    9: "[0-5]",
+    1: timeMask ? "[0-9]" : "[0-2]",
+    a: "[A-Za-z]",
+    "*": "[A-Za-z0-9]",
+  }
+  let formatChars2 = {
+    7: "[0-1]",
+    8: "[0-2]",
+    9: "[0-5]",
+    1: "[0-2]",
+    a: "[A-Za-z]",
+    "*": "[A-Za-z0-9]",
+  }
 
   return (
     <Grid item>
@@ -698,87 +897,93 @@ const AdressFormwithoutReactMemo = ({
               spacing={2}
               className={classes.contentContainer}
             >
-              {isAirline && bookingType === 3 && (
-                <Grid
-                  className={
-                    redBorderOnAirlines
-                      ? classes.redBorderForAirlines
-                      : classes.redBorderForAirlinesDefault
-                  }
-                  style={{
-                    marginLeft: "8px",
-                    marginRight: "8px",
-                    marginTop: "6px",
-                    marginBottom: "5px",
-                  }}
-                >
-                  <Grid item>
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={airlines}
-                      defaultValue={null}
-                      autoHighlight
-                      getOptionLabel={(option) => option.name}
-                      classes={{
-                        popupIndicator: classes.popupIndicator,
-                        option: classes.option,
-                        paper: classes.selectedOption,
-                      }}
-                      renderOption={(option) => (
-                        <>
-                          <span>{option.code}</span>
-                          {option.name} ({option.code})
-                        </>
-                      )}
-                      renderInput={(params) => {
-                        params.InputProps.startAdornment = (
-                          <InputAdornment position="start">
-                            <PlaneIcon />
-                          </InputAdornment>
-                        )
-                        return (
-                          <TextField
-                            {...params}
-                            fullWidth
-                            placeholder="Airlines"
-                            className={classes.airLinesInput}
-                            style={{
-                              height: "40px",
+              {/* (isAirline || formData.isAirportPickupIncluded) &&
+              (formData.bookingType===3 || bookingType === 3) */}
+              {(isAirline || formData.isAirportPickupIncluded) &&
+                (formData.bookingType === 3 || bookingType === 3) && (
+                  <Grid
+                    className={
+                      redBorderOnAirlines
+                        ? classes.redBorderForAirlines
+                        : classes.redBorderForAirlinesDefault
+                    }
+                    style={{
+                      marginLeft: "8px",
+                      marginRight: "8px",
+                      marginTop: "6px",
+                    }}
+                  >
+                    <Grid item>
+                      <Autocomplete
+                        id="combo-box-demo"
+                        options={airlines}
+                        defaultValue={null}
+                        autoHighlight
+                        disablePortal
+                        getOptionLabel={(option) => option.name}
+                        classes={{
+                          popupIndicator: classes.popupIndicator,
+                          option: classes.option,
+                          paper: classes.selectedOption,
+                        }}
+                        renderOption={(option) => (
+                          <>
+                            <span>{option.code}</span>
+                            {option.name} ({option.code})
+                          </>
+                        )}
+                        renderInput={(params) => {
+                          params.InputProps.startAdornment = (
+                            <InputAdornment position="start">
+                              <PlaneIcon />
+                            </InputAdornment>
+                          )
+                          return (
+                            <TextField
+                              {...params}
+                              fullWidth
+                              placeholder="Airlines"
+                              className={classes.airLinesInput}
+                              style={{
+                                height: "40px",
 
-                              backgroundColor: "black",
-                              boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
-                              paddingLeft: "10px",
-                              paddingRight: "10px",
-                              borderRadius: "0",
-                            }}
-                            InputProps={{
-                              ...params.InputProps,
-                              classes: {
-                                root: classes.inputDateTime,
-                                input: classes.input, // class name, e.g. `classes-nesting-root-x`
-                                notchedOutline: classes.noBorder,
-                              },
-                              disableUnderline: true,
-                            }}
-                          />
-                        )
-                      }}
-                      onChange={(event, newValue) => {
-                        newValue
-                          ? setAirlineId(newValue.id)
-                          : setAirlineId(null)
-                      }}
-                      name="airlines"
-                    />
-                  </Grid>
-                  <Grid item style={{ marginTop: "12px" }}>
+                                backgroundColor: "black",
+                                boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
+                                paddingLeft: "10px",
+                                paddingRight: "10px",
+                                borderRadius: "0",
+                              }}
+                              InputProps={{
+                                ...params.InputProps,
+                                classes: {
+                                  root: classes.inputDateTime,
+                                  input: classes.input, // class name, e.g. `classes-nesting-root-x`
+                                  notchedOutline: classes.noBorder,
+                                },
+                                disableUnderline: true,
+                              }}
+                            />
+                          )
+                        }}
+                        onChange={(event, newValue) => {
+                          newValue
+                            ? setAirlineId(newValue.id)
+                            : setAirlineId(null)
+                        }}
+                        name="airlines"
+                      />
+                    </Grid>
                     <Grid
+                      item
+                      style={{ marginTop: "17px", marginBottom: "9px" }}
+                    >
+                      {/* <Grid
                       container
                       direction="row"
                       justify="space-between"
                       alignItems="center"
-                    >
-                      <Grid item style={{ width: "50%" }}>
+                    > */}
+                      <Grid item style={{ width: "100%" }}>
                         <CustomFormInput
                           name="flightNumber"
                           variant="outlined"
@@ -789,7 +994,7 @@ const AdressFormwithoutReactMemo = ({
                             // border: "none",
                             backgroundColor: "black",
                             boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
-                            width: "94%",
+                            width: "100%",
                             marginBottom: "0px",
                             marginTop: "0px",
                             borderRadius: "0",
@@ -812,55 +1017,10 @@ const AdressFormwithoutReactMemo = ({
                           }}
                         />
                       </Grid>
-                      <Grid item style={{ width: "43%" }}>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justify="space-between"
-                        >
-                          <Grid item>
-                            <Typography
-                              style={{ color: "white", fontSize: "15px" }}
-                            >
-                              {"Meet & Greet"}
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <AntSwitch
-                              onClick={() => {
-                                if (gateMeeting == false) {
-                                  // setIsGateMeeting(true)
-                                  setGateMeetingRedux(true)
-                                  setIsGateMeeting(true)
-                                  setIsAirportPickupIncludedLocalState(true)
-                                  console.log("true")
-                                } else {
-                                  // setIsGateMeeting(false)
-                                  setGateMeetingRedux(false)
-                                  setIsGateMeeting(false)
-                                  setIsAirportPickupIncludedLocalState(false)
-                                  console.log("false")
-                                }
-                                // setIsGateMeeting(!isGateMeeting)
-                                // setTimeout(() => {
-                                //   console.log(isGateMeeting)
-                                //   if (isGateMeeting == true) {
-                                //     setGateMeetingRedux(true)
-                                //   } else {
-                                //     setGateMeetingRedux(false)
-                                //   }
-                                // }, 1500)
-                              }}
-                              color="primary"
-                            />
-                          </Grid>
-                        </Grid>
-                      </Grid>
+                      {/* </Grid> */}
                     </Grid>
                   </Grid>
-                </Grid>
-              )}
+                )}
               <Grid item style={{ width: "100%" }}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Grid
@@ -889,13 +1049,18 @@ const AdressFormwithoutReactMemo = ({
                           paddingLeft: "15px",
                           boxShadow: "4px 5px 30px rgba(0, 0, 0, 0.1)",
                           borderRadius: "0",
-                          "&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded":
-                            {
-                              zIndex: "1000000000000000000",
-                            },
+                          // "&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded":
+                          //   {
+                          //     zIndex: "1000000000000000000",
+                          //   },
                         }}
+                        // value={}
                         placeholder="Pick up Date"
-                        defaultValue={null}
+                        defaultValue={
+                          formData.dateForDefaultValue && !resetInputs
+                            ? formData.dateForDefaultValue
+                            : null
+                        }
                         disablePast
                         fullWidth
                         // onChange={(event, x) => {
@@ -942,89 +1107,114 @@ const AdressFormwithoutReactMemo = ({
                         },
                       }}
                     >
-                      {/* <CustomMaskInput
+                      <ReactInputMask
                         name="orderStartTime"
-                        mask="99:99"
+                        mask="71:98"
                         autoComplete="off"
+                        maskChar="_"
+                        // alwaysShowMask={false}
+                        formatChars={formatChars}
+                        // mask={mask}
+                        onChange={(e) => handleInput(e)}
+                        // onChange={(e) => console.log("EMIR")}
+                        value={
+                          !resetInputs ? formData.timeForDefaultValue : null
+                        }
                       >
-                        {(inputProps) => (
-                          <TextField
-                            {...inputProps}
-                            variant="outlined"
-                            placeholder="hh:mm"
-                            autoComplete="off"
-                            fullWidth
-                            style={{ borderRadius: "0px" }}
-                            InputProps={{
-                              classes: {
-                                root: classes.inputDateTime,
-                                input: classes.input, // class name, e.g. `classes-nesting-root-x`
-                                notchedOutline: redBorderOnSubmitForTime
-                                  ? classes.noBorderRed
-                                  : classes.noBorderDefault,
-                              },
-                              startAdornment: (
-                                <InputAdornment
-                                  position="start"
-                                  style={{
-                                    marginRight: "10px",
-                                    marginLeft: "-3px",
-                                  }}
-                                >
-                                  <ClockIcon />
-                                </InputAdornment>
-                              ),
-                              endAdornment: (
-                                <>
-                                  <ToggleButtonGroup
-                                    color="primary"
-                                    value={alignment}
-                                    exclusive
-                                    onChange={handleChangeAMPM}
+                        {(inputProps) => {
+                          return (
+                            <TextField
+                              {...inputProps}
+                              variant="outlined"
+                              placeholder="hh:mm"
+                              autoComplete="off"
+                              fullWidth
+                              // style={{ borderRadius: "5px" }}
+
+                              InputProps={{
+                                classes: {
+                                  root: classes.inputDateTime,
+                                  input: classes.input, // class name, e.g. `classes-nesting-root-x`
+                                  notchedOutline:
+                                    redBorderOnSubmitForTime ||
+                                    redBorderOnSubmitForTime2 ||
+                                    redBorderOnSubmitForTime3 ||
+                                    redBorderOnSubmitForTime4 ||
+                                    redBorderOnSubmitForTime5 ||
+                                    redBorderOnSubmitForTime6
+                                      ? classes.noBorderRed
+                                      : classes.noBorderDefault,
+                                },
+                                startAdornment: (
+                                  <InputAdornment
+                                    position="start"
                                     style={{
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      alignItems: "center",
-                                      marginRight: "-8px",
+                                      marginRight: "10px",
+                                      marginLeft: "-3px",
                                     }}
                                   >
-                                    <ToggleButton
-                                      value="AM"
-                                      className={classes.rootToggleButton}
+                                    <ClockIcon />
+                                  </InputAdornment>
+                                ),
+                                endAdornment: (
+                                  <>
+                                    <ToggleButtonGroup
+                                      color="primary"
+                                      value={
+                                        formData.timeForDefaultValueAMPM
+                                          ?.alignment ||
+                                        formData.timeForDefaultValueAMPM?.ampm
+                                          ? formData.timeForDefaultValueAMPM
+                                              ?.ampm
+                                          : alignment
+                                      }
+                                      exclusive
+                                      onChange={handleChangeAMPM}
                                       style={{
-                                        width: "26px",
-                                        height: "20px",
-                                        fontSize: "13px",
-                                        paddingTop: "0px",
-                                        paddingBottom: "0px",
-                                      }}
-                                      onClick={(e) => {}}
-                                    >
-                                      AM
-                                    </ToggleButton>
-                                    <ToggleButton
-                                      value="PM"
-                                      className={classes.rootToggleButton}
-                                      style={{
-                                        width: "26px",
-                                        height: "20px",
-                                        marginLeft: "2px",
-                                        fontSize: "13px",
-                                        paddingTop: "0px",
-                                        paddingBottom: "0px",
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        marginRight: "-8px",
                                       }}
                                     >
-                                      PM
-                                    </ToggleButton>
-                                  </ToggleButtonGroup>
-                                </>
-                              ),
-                            }}
-                          />
-                        )}
-                      </CustomMaskInput> */}
+                                      <ToggleButton
+                                        value="AM"
+                                        className={classes.rootToggleButton}
+                                        style={{
+                                          width: "26px",
+                                          height: "20px",
+                                          fontSize: "13px",
+                                          paddingTop: "0px",
+                                          paddingBottom: "0px",
+                                        }}
+                                        onClick={(e) => {}}
+                                      >
+                                        AM
+                                      </ToggleButton>
+                                      <ToggleButton
+                                        value="PM"
+                                        className={classes.rootToggleButton}
+                                        style={{
+                                          width: "26px",
+                                          height: "20px",
+                                          marginLeft: "2px",
+                                          fontSize: "13px",
+                                          paddingTop: "0px",
+                                          paddingBottom: "0px",
+                                        }}
+                                      >
+                                        PM
+                                      </ToggleButton>
+                                    </ToggleButtonGroup>
+                                  </>
+                                ),
+                              }}
+                            />
+                          )
+                        }}
+                      </ReactInputMask>
 
-                      <div
+                      {/* <div
                         style={{
                           position: "absolute",
                           marginTop: "10px",
@@ -1070,7 +1260,7 @@ const AdressFormwithoutReactMemo = ({
                             borderRadius: "0",
                           }}
                         ></TimeInputControl>
-                      </div>
+                      </div> */}
                     </Grid>
                   </Grid>
                 </MuiPickersUtilsProvider>
@@ -1087,8 +1277,152 @@ const AdressFormwithoutReactMemo = ({
                     passengersqState={formData.passengersQuantity}
                     setPassengers={setPassengers}
                     passengers={passengers}
+                    setPassengersQuantityForBackStep={
+                      setPassengersQuantityForBackStep
+                    }
+                    passengersQuantityForBackStep={
+                      formData.passengersQuantityForBackStep
+                    }
+                    resetInputs={resetInputs}
                   />
                 </div>
+              </Grid>
+              {(isAirline || formData.isAirportPickupIncluded) &&
+                (formData.bookingType === 3 || bookingType === 3) && (
+                  <Grid
+                    item
+                    style={{
+                      width: "100%",
+                      marginTop: "8px",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    <Grid
+                      container
+                      direction="row"
+                      alignItems="center"
+                      justify="space-between"
+                    >
+                      <Grid>
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          style={{ paddingLeft: "8px" }}
+                        >
+                          <MeetAndGreetIcon />
+                          <Typography
+                            style={{
+                              color: "white",
+                              fontSize: "15px",
+                              marginLeft: "7px",
+                            }}
+                          >
+                            {"Meet & Greet/Luggage Assist"}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid item>
+                        <AntSwitch
+                          onClick={() => {
+                            if (gateMeeting == false) {
+                              // setIsGateMeeting(true)
+                              setGateMeetingRedux(true)
+                              setIsGateMeeting(true)
+                              setIsAirportPickupIncludedLocalState(true)
+                              console.log("true")
+                            } else {
+                              // setIsGateMeeting(false)
+                              setGateMeetingRedux(false)
+                              setIsGateMeeting(false)
+                              setIsAirportPickupIncludedLocalState(false)
+                              console.log("false")
+                            }
+                            // setIsGateMeeting(!isGateMeeting)
+                            // setTimeout(() => {
+                            //   console.log(isGateMeeting)
+                            //   if (isGateMeeting == true) {
+                            //     setGateMeetingRedux(true)
+                            //   } else {
+                            //     setGateMeetingRedux(false)
+                            //   }
+                            // }, 1500)
+                          }}
+                          color="primary"
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                )}
+              <Grid item style={{ width: "100%", marginTop: "6px" }}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Grid
+                      container
+                      direction="row"
+                      alignItems="center"
+                      style={{ paddingLeft: "8px" }}
+                    >
+                      <SafetySeatIcon />
+                      <Typography
+                        style={{
+                          color: "white",
+                          fontSize: "14px",
+                          marginLeft: "9px",
+                        }}
+                      >
+                        Safety Seat
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <AntSwitch
+                    color="primary"
+                    // disabled={disableHourly}
+                    checked={safetySeat}
+                    onClick={() => {
+                      // if (hourly == false) {
+                      //   // // setIsGateMeeting(true)
+                      //   // setGateMeetingRedux(true)
+                      //   setHourly(true)
+                      //   // hourly = true
+                      //   console.log("true")
+                      //   console.log(hourly)
+                      // } else {
+                      //   // setIsGateMeeting(false)
+                      //   // setGateMeetingRedux(false)
+                      //   setHourly(true)
+                      //   // hourly = false
+                      //   console.log("false")
+                      //   console.log(hourly)
+                      // }
+                      setSafetySeat(!safetySeat)
+
+                      // setHourlyRedux()
+                      // hourly ? setBookingType(2) : setBookingType(1)
+                    }}
+                  />
+                </Grid>
+              </Grid>
+              <Grid item style={{ width: "100%" }}>
+                {safetySeat === true && (
+                  <Grid item>
+                    <SafetySeat
+                      setBoosterSeat={setBoosterSeat}
+                      setChildSafetySeat={setChildSafetySeat}
+                      boosterSeat={boosterSeat}
+                      childSafetySeat={childSafetySeat}
+                      // hoursState={formData.hours}
+                      // hourly={hourly}
+                      // hoursAddressForm={hoursAddressForm}
+                      // setHoursAddressForm={setHoursAddressForm}
+                    />
+                  </Grid>
+                )}
               </Grid>
               <Grid item style={{ width: "100%" }}>
                 <Grid
@@ -1130,7 +1464,7 @@ const AdressFormwithoutReactMemo = ({
                       //   console.log("false")
                       //   console.log(hourly)
                       // }
-                      if (!hourlyRedux) {
+                      if (!hourlyAndSeatsRedux) {
                         // setIsGateMeeting(true)
                         setHourlyRedux(true)
                         // console.log("true")
@@ -1335,7 +1669,7 @@ const mapStateToProps = (state) => {
     formData: state.formData,
     resetInputs: state.resetWidgetInputs.resetInputs,
     gateMeeting: state.gateMeeting.isGateMeeting,
-    hourlyRedux: state.hourlyRedux.hourlyRedux,
+    hourlyAndSeatsRedux: state.hourlyAndSeatsRedux.hourlyRedux,
   }
 }
 
@@ -1345,4 +1679,11 @@ export default connect(mapStateToProps, {
   setFormData,
   setHourlyRedux,
   setGateMeetingRedux,
+  setSafetySeatCount,
+  setBoosterSeatCount,
+  setDateForDefaultValue,
+  setTimeForDefaultValue,
+  setTimeForDefaultValueAMPM,
+  setTimeForDefaultValueAlignment,
+  setPassengersQuantityForBackStep,
 })(AdressForm)

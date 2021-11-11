@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
       animationName: "$pulse",
       animationIterationCount: "infinite",
       animationDuration: "2s",
+      transform: "rotate(0deg)",
       backgroundColor: "black",
     },
     "& .MuiButtonBase-root": {

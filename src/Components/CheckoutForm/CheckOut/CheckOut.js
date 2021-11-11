@@ -35,7 +35,13 @@ const CheckOut = ({
           />
         )
       case 1:
-        return <FleetForm next={nextStep} back={backStep} />
+        return (
+          <FleetForm
+            next={nextStep}
+            back={backStep}
+            setActiveStep={setActiveStep}
+          />
+        )
       case 2:
         return <Preview next={nextStep} back={backStep} />
       case 3:

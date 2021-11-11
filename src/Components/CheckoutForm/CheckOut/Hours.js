@@ -3,6 +3,7 @@ import Typography from "@material-ui/core/Typography"
 import React, { useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { HourlyIcon, MinusIcon, PlusIcon } from "../../../assets/icons"
+import "./index.css"
 
 const Hours = ({
   hoursState,

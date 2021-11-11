@@ -1,13 +1,15 @@
-import { authApi } from '../api/api'
+import { authApi } from "../api/api"
 
-const SET_TOKEN = '/redux/companyTokenReducer/SET_TOKEN'
+const SET_TOKEN = "/redux/companyTokenReducer/SET_TOKEN"
+const SET_LOADING = "/redux/companyTokenReducer/SET_LOADING"
 
 let initialState = {
   token: {
-    jwtToken: '',
-    rtToken: '',
+    jwtToken: "",
+    rtToken: "",
     identityUserId: 0,
   },
+  loading: true,
 }
 
 const companyTokenReducer = (state = initialState, action) => {
@@ -17,6 +19,11 @@ const companyTokenReducer = (state = initialState, action) => {
         ...state,
         token: action.payload,
       }
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: action.payload,
+      }
     default:
       return state
   }
@@ -24,14 +31,16 @@ const companyTokenReducer = (state = initialState, action) => {
 
 export const setToken = (token) => ({ type: SET_TOKEN, payload: token })
 
+export const setLoading = (flag) => ({ type: SET_LOADING, payload: flag })
+
 export const getCompanyToken = () => {
   return async (dispatch) => {
     let response = await authApi.getToken()
-
+    dispatch(setLoading(false))
     if (response.status === 200) {
       dispatch(setToken(response.data))
       console.log(response.data)
-      window.localStorage.setItem('Authorization', response.data.jwtToken)
+      window.localStorage.setItem("Authorization", response.data.jwtToken)
 
       return true
     } else {

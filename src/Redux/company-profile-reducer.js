@@ -4,6 +4,7 @@ const SET_COMPANY_PROFILE = "/redux/companyProfileReducer/SET_COMPANY_PROFILE"
 const RESERVATION_SUCCESS = "/redux/companyProfileReducer/RESERVATION_SUCCESS"
 const APP_INITIALIZING = "/redux/companyProfileReducer/APP_INITIALIZING"
 const FAIL_MESSAGE = "/redux/companyProfileReducer/FAIL_MESSAGE"
+const GOT_ADDRESS_ERROR = "/redux/companyProfileReducer/GOT_ADDRESS_ERROR"
 
 let initialState = {
   profile: {
@@ -28,6 +29,7 @@ let initialState = {
   isSuccess: false,
   failMessage: "",
   initializing: false,
+  gotAddressError: false,
 }
 
 const companyProfileReducer = (state = initialState, action) => {
@@ -53,6 +55,12 @@ const companyProfileReducer = (state = initialState, action) => {
         ...state,
         failMessage: action.failMessage,
       }
+
+    case GOT_ADDRESS_ERROR:
+      return {
+        ...state,
+        gotAddressError: action.payload,
+      }
     default:
       return state
   }
@@ -75,6 +83,10 @@ export const failMessage = (failMessage) => ({
 export const initializing = (initializing) => ({
   type: APP_INITIALIZING,
   initializing,
+})
+export const setGotAddressError = (flag) => ({
+  type: GOT_ADDRESS_ERROR,
+  payload: flag,
 })
 
 export const getCompanyProfile = () => {

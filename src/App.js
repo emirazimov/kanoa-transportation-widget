@@ -1,31 +1,31 @@
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
-import Card from '@material-ui/core/Card'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Slide from '@material-ui/core/Slide'
-import { ThemeProvider } from '@material-ui/styles'
+import Accordion from "@material-ui/core/Accordion"
+import AccordionDetails from "@material-ui/core/AccordionDetails"
+import AccordionSummary from "@material-ui/core/AccordionSummary"
+import Card from "@material-ui/core/Card"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import Slide from "@material-ui/core/Slide"
+import { ThemeProvider } from "@material-ui/styles"
 // import { isMobile } from 'react-device-detect';
-import React, { useEffect } from 'react'
-import Draggable from 'react-draggable'
-import { connect } from 'react-redux'
+import React, { useEffect } from "react"
+import Draggable from "react-draggable"
+import { connect } from "react-redux"
 import {
   BookinglaneIcon,
   BookinglaneIconForMobile,
   CloseWidgetIcon,
-} from './assets/icons'
-import CheckOut from './Components/CheckoutForm/CheckOut/CheckOut'
-import CompanyProfile from './Components/CompanyProfile/CompanyProfile'
+} from "./assets/icons"
+import CheckOut from "./Components/CheckoutForm/CheckOut/CheckOut"
+import CompanyProfile from "./Components/CompanyProfile/CompanyProfile"
 import {
   getCompanyProfile,
   initializing,
-} from './Redux/company-profile-reducer'
-import { getCompanyToken } from './Redux/company-token-reducer'
-import theme from './Theme'
+} from "./Redux/company-profile-reducer"
+import { getCompanyToken } from "./Redux/company-token-reducer"
+import theme from "./Theme"
 
-import { userScreenHeight, userScreenWidth, useStyles } from './AppStyles'
-import { AppBar, useMediaQuery } from '@material-ui/core'
-import { useRef } from 'react'
+import { userScreenHeight, userScreenWidth, useStyles } from "./AppStyles"
+import { AppBar, useMediaQuery } from "@material-ui/core"
+import { useRef } from "react"
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 
 let xOrdinate = 0
@@ -55,7 +55,7 @@ const App = (props) => {
 
   const handleClose = () => {
     setExpanded(false)
-    document.body.style.overflowY = 'unset'
+    document.body.style.overflowY = "unset"
     position.current.y = 10
 
     if (userScreenWidth - xOrdinate < 500) {
@@ -127,9 +127,9 @@ const App = (props) => {
 
   React.useEffect(() => {
     if (backgroundScrollStop) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = "hidden"
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = "unset"
     }
   }, [backgroundScrollStop])
 
@@ -141,6 +141,15 @@ const App = (props) => {
     settingHeight()
     setHeightOfBookNow(refOfBookNow.current.clientHeight)
   }, [heightOfBookNow])
+  props.getCompanyToken()
+  React.useEffect(() => {
+    if (props.loading) {
+      setDisabled(true)
+    } else {
+      setDisabled(false)
+    }
+  }, [props.loading])
+  // console.log(props.loading)
   const handleDrag = (e, ui) => {
     position.current.x = ui.x
     position.current.y = ui.y
@@ -153,7 +162,7 @@ const App = (props) => {
   const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1)
   const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1)
 
-  const jwtToken = localStorage.getItem('Authorization')
+  const jwtToken = localStorage.getItem("Authorization")
 
   // useEffect(() => {
   //   if (jwtToken) {
@@ -164,30 +173,30 @@ const App = (props) => {
   // }, [jwtToken])
 
   const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction='up' ref={ref} {...props} />
+    return <Slide direction="up" ref={ref} {...props} />
   })
 
-  const isMobile = useMediaQuery('(max-width:530px)')
-  const isiPad = useMediaQuery('(max-width:1024px)')
+  const isMobile = useMediaQuery("(max-width:530px)")
+  const isiPad = useMediaQuery("(max-width:1024px)")
   const forBostonLimousineToDisplayIconOnTheLeft =
-    useMediaQuery('(max-width:500px)')
+    useMediaQuery("(max-width:500px)")
 
   let stylesForBody = `
-    z-index: 1300; 
+    z-index: 1000000000; 
     position: absolute;
   `
-  document.getElementById('widget-by-bookinglane').style = stylesForBody
+  document.getElementById("widget-by-bookinglane").style = stylesForBody
 
   return (
     <>
-      {props.getCompanyToken() && (
-        <>
-          {forBostonLimousineToDisplayIconOnTheLeft ? (
-            <>
-              <CssBaseline />
-              <ThemeProvider theme={theme}>
-                <div className={classes.mainMobile}>
-                  {/* <Draggable
+      {/* {props.getCompanyToken() && ( */}
+      <>
+        {forBostonLimousineToDisplayIconOnTheLeft ? (
+          <>
+            <CssBaseline />
+            <ThemeProvider theme={theme}>
+              <div className={classes.mainMobile}>
+                {/* <Draggable
                 onStart={disableAccordionButtonMobile}
                 onDrag={handleDragForMobile}
                 onStop={enableAccordionButtonMobile}
@@ -202,30 +211,30 @@ const App = (props) => {
                 // allowAnyClick={false}
                 // enableUserSelectHack={false}
               > */}
-                  <Accordion
-                    elevation={0}
-                    disabled={disabled}
-                    classes={{
-                      root: classes.MuiAccordionroot,
-                      disabled: classes.disabledButton,
+                <Accordion
+                  elevation={0}
+                  disabled={disabled}
+                  classes={{
+                    root: classes.MuiAccordionroot,
+                    disabled: classes.disabledButton,
+                  }}
+                  TransitionProps={{
+                    timeout: 0,
+                  }}
+                  expanded={expanded === "panel1"}
+                  onChange={handleChange("panel1")}
+                >
+                  <AccordionSummary
+                    className={classes.accordionMobile}
+                    expandIcon={<BookinglaneIconForMobile />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header-mobile"
+                    ref={refOfBookNow}
+                    onClick={() => {
+                      setBackgroundScrollStop(true)
                     }}
-                    TransitionProps={{
-                      timeout: 0,
-                    }}
-                    expanded={expanded === 'panel1'}
-                    onChange={handleChange('panel1')}
                   >
-                    <AccordionSummary
-                      className={classes.accordionMobile}
-                      expandIcon={<BookinglaneIconForMobile />}
-                      aria-controls='panel1a-content'
-                      id='panel1a-header-mobile'
-                      ref={refOfBookNow}
-                      onClick={() => {
-                        setBackgroundScrollStop(true)
-                      }}
-                    >
-                      {/* <div
+                    {/* <div
                       id="mainest"
                       className={classes.accordionMobile}
                       style={{
@@ -238,150 +247,236 @@ const App = (props) => {
                         marginLeft: "34px",
                       }}
                     ></div> */}
-                    </AccordionSummary>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {jwtToken && (
+                      <Card
+                        className={
+                          backgroundScrollStopForTimePicker
+                            ? classes.contentMobileWithoutScroll
+                            : classes.contentMobile
+                        }
+                        style={{ bottom: userScreenHeight - yOrdinate }}
+                        style={
+                          activeStep === 1
+                            ? { overflowY: "hidden" }
+                            : { overflowY: "auto" }
+                        }
+                        style={{
+                          width: userScreenWidth,
+                        }} /* ширину уже раскрывшегося карда пишу сдезь потому-что через makestyles не сетает*/
+                        ref={refOfCard}
+                      >
+                        <CompanyProfile
+                          setExpanded={handleClose}
+                          initializing={props.initializing}
+                          expanded={expanded}
+                          setActiveStep={setActiveStep}
+                          setBackgroundScrollStop={setBackgroundScrollStop}
+                        />
+
+                        {props.initializing ? (
+                          <CheckOut
+                            isFetching={props.isFetching}
+                            setExpanded={handleClose}
+                            activeStep={activeStep}
+                            setActiveStep={setActiveStep}
+                            nextStep={nextStep}
+                            backStep={backStep}
+                            backgroundScrollStopForTimePicker={
+                              backgroundScrollStopForTimePicker
+                            }
+                            setBackgroundScrollStopForTimePicker={
+                              setBackgroundScrollStopForTimePicker
+                            }
+                          />
+                        ) : null}
+                      </Card>
+                    )}
+                    {!jwtToken && null}
+                  </AccordionDetails>
+                </Accordion>
+                {/* </Draggable> */}
+              </div>
+            </ThemeProvider>
+          </>
+        ) : (
+          <>
+            <CssBaseline />
+            <ThemeProvider theme={theme}>
+              <div className={classes.main}>
+                {forBostonLimousineToDisplayIconOnTheLeft && (
+                  <Accordion
+                    elevation={0}
+                    disabled={disabled}
+                    classes={{
+                      root: classes.MuiAccordionroot,
+                      disabled: classes.disabledButton,
+                    }}
+                    TransitionProps={{
+                      timeout: 0,
+                    }}
+                    expanded={expanded === "panel1"}
+                    onChange={handleChange("panel1")}
+                  >
+                    <AccordionSummary
+                      className={
+                        classes.accordionforBostonLimousineToDisplayIconOnTheLeft
+                      }
+                      expandIcon={<BookinglaneIconForMobile />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                      ref={refOfBookNow}
+                      onClick={() => {
+                        setBackgroundScrollStop(true)
+                      }}
+                    ></AccordionSummary>
                     <AccordionDetails>
                       {jwtToken && (
-                        <Card
-                          className={
-                            backgroundScrollStopForTimePicker
-                              ? classes.contentMobileWithoutScroll
-                              : classes.contentMobile
-                          }
-                          style={{ bottom: userScreenHeight - yOrdinate }}
-                          style={
-                            activeStep === 1
-                              ? { overflowY: 'hidden' }
-                              : { overflowY: 'auto' }
-                          }
-                          style={{
-                            width: userScreenWidth,
-                          }} /* ширину уже раскрывшегося карда пишу сдезь потому-что через makestyles не сетает*/
-                          ref={refOfCard}
-                        >
-                          <CompanyProfile
-                            setExpanded={handleClose}
-                            initializing={props.initializing}
-                            expanded={expanded}
-                            setActiveStep={setActiveStep}
-                            setBackgroundScrollStop={setBackgroundScrollStop}
-                          />
+                        <div className="mainContent">
+                          <Card
+                            className={classes.content}
+                            style={{ bottom: userScreenHeight - yOrdinate }}
+                            style={
+                              activeStep === 1
+                                ? { overflowY: "hidden auto" }
+                                : { overflowY: "auto" }
+                            }
+                            ref={refOfCard}
+                            // style={{ borderRadius: "10px" }}
+                          >
+                            <AppBar position="sticky" color=" #101020">
+                              <div className="companyProfileClassForDrag">
+                                {/* этот класс c div-oм для реакт драга чтобы можно было перетаскивать по шапке виджета*/}
+                                <div className={classes.companyProfile}>
+                                  {/* это для pointer cursora */}
+                                  <CompanyProfile
+                                    setExpanded={handleClose}
+                                    initializing={props.initializing}
+                                    expanded={expanded}
+                                    setActiveStep={setActiveStep}
+                                    setBackgroundScrollStop={
+                                      setBackgroundScrollStop
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            </AppBar>
 
-                          {props.initializing ? (
-                            <CheckOut
-                              isFetching={props.isFetching}
-                              setExpanded={handleClose}
-                              activeStep={activeStep}
-                              setActiveStep={setActiveStep}
-                              nextStep={nextStep}
-                              backStep={backStep}
-                              backgroundScrollStopForTimePicker={
-                                backgroundScrollStopForTimePicker
-                              }
-                              setBackgroundScrollStopForTimePicker={
-                                setBackgroundScrollStopForTimePicker
-                              }
-                            />
-                          ) : null}
-                        </Card>
+                            {props.initializing ? (
+                              <CheckOut
+                                isFetching={props.isFetching}
+                                setExpanded={handleClose}
+                                activeStep={activeStep}
+                                setActiveStep={setActiveStep}
+                                nextStep={nextStep}
+                                backStep={backStep}
+                              />
+                            ) : null}
+                          </Card>
+                        </div>
                       )}
                       {!jwtToken && null}
                     </AccordionDetails>
                   </Accordion>
-                  {/* </Draggable> */}
-                </div>
-              </ThemeProvider>
-            </>
-          ) : (
-            <>
-              <CssBaseline />
-              <ThemeProvider theme={theme}>
-                <div className={classes.main}>
-                  {forBostonLimousineToDisplayIconOnTheLeft && (
-                    <Accordion
-                      elevation={0}
-                      disabled={disabled}
-                      classes={{
-                        root: classes.MuiAccordionroot,
-                        disabled: classes.disabledButton,
+                )}
+                {isiPad && (
+                  // <Draggable
+                  //   onDrag={handleDrag}
+                  //   onStop={enableAccordionButton}
+                  //   position={position.current}
+                  //   // defaultPosition={{ x: userScreenWidth, y: 25 }}
+
+                  //   // disabled={false}
+                  //   // bounds="body"
+                  //   handle=".companyProfileClassForDrag"
+                  // >
+                  <Accordion
+                    elevation={0}
+                    disabled={disabled}
+                    classes={{
+                      root: classes.MuiAccordionroot,
+                      disabled: classes.disabledButton,
+                    }}
+                    TransitionProps={{
+                      timeout: 0,
+                    }}
+                    expanded={expanded === "panel1"}
+                    onChange={handleChange("panel1")}
+                  >
+                    <AccordionSummary
+                      className={classes.accordionIpad}
+                      expandIcon={<BookinglaneIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                      ref={refOfBookNow}
+                      onClick={() => {
+                        setBackgroundScrollStop(true)
                       }}
-                      TransitionProps={{
-                        timeout: 0,
-                      }}
-                      expanded={expanded === 'panel1'}
-                      onChange={handleChange('panel1')}
-                    >
-                      <AccordionSummary
-                        className={
-                          classes.accordionforBostonLimousineToDisplayIconOnTheLeft
-                        }
-                        expandIcon={<BookinglaneIconForMobile />}
-                        aria-controls='panel1a-content'
-                        id='panel1a-header'
-                        ref={refOfBookNow}
-                        onClick={() => {
-                          setBackgroundScrollStop(true)
-                        }}
-                      ></AccordionSummary>
-                      <AccordionDetails>
-                        {jwtToken && (
-                          <div className='mainContent'>
-                            <Card
-                              className={classes.content}
-                              style={{ bottom: userScreenHeight - yOrdinate }}
-                              style={
-                                activeStep === 1
-                                  ? { overflowY: 'hidden auto' }
-                                  : { overflowY: 'auto' }
-                              }
-                              ref={refOfCard}
-                              // style={{ borderRadius: "10px" }}
-                            >
-                              <AppBar position='sticky' color=' #101020'>
-                                <div className='companyProfileClassForDrag'>
-                                  {/* этот класс c div-oм для реакт драга чтобы можно было перетаскивать по шапке виджета*/}
-                                  <div className={classes.companyProfile}>
-                                    {/* это для pointer cursora */}
-                                    <CompanyProfile
-                                      setExpanded={handleClose}
-                                      initializing={props.initializing}
-                                      expanded={expanded}
-                                      setActiveStep={setActiveStep}
-                                      setBackgroundScrollStop={
-                                        setBackgroundScrollStop
-                                      }
-                                    />
-                                  </div>
+                    ></AccordionSummary>
+
+                    <AccordionDetails>
+                      {jwtToken && (
+                        <div className="mainContent">
+                          <Card
+                            className={classes.contentIpad}
+                            style={{ bottom: userScreenHeight - yOrdinate }}
+                            style={
+                              activeStep === 1
+                                ? { overflowY: "hidden auto" }
+                                : { overflowY: "auto" }
+                            }
+                            ref={refOfCard}
+                            // style={{ borderRadius: "10px" }}
+                          >
+                            <AppBar position="sticky" color=" #101020">
+                              <div className="companyProfileClassForDrag">
+                                {/* этот класс c div-oм для реакт драга чтобы можно было перетаскивать по шапке виджета*/}
+                                <div className={classes.companyProfile}>
+                                  {/* это для pointer cursora */}
+                                  <CompanyProfile
+                                    setExpanded={handleClose}
+                                    initializing={props.initializing}
+                                    expanded={expanded}
+                                    setActiveStep={setActiveStep}
+                                    setBackgroundScrollStop={
+                                      setBackgroundScrollStop
+                                    }
+                                  />
                                 </div>
-                              </AppBar>
+                              </div>
+                            </AppBar>
 
-                              {props.initializing ? (
-                                <CheckOut
-                                  isFetching={props.isFetching}
-                                  setExpanded={handleClose}
-                                  activeStep={activeStep}
-                                  setActiveStep={setActiveStep}
-                                  nextStep={nextStep}
-                                  backStep={backStep}
-                                />
-                              ) : null}
-                            </Card>
-                          </div>
-                        )}
-                        {!jwtToken && null}
-                      </AccordionDetails>
-                    </Accordion>
-                  )}
-                  {isiPad && (
-                    // <Draggable
-                    //   onDrag={handleDrag}
-                    //   onStop={enableAccordionButton}
-                    //   position={position.current}
-                    //   // defaultPosition={{ x: userScreenWidth, y: 25 }}
+                            {props.initializing ? (
+                              <CheckOut
+                                isFetching={props.isFetching}
+                                setExpanded={handleClose}
+                                activeStep={activeStep}
+                                setActiveStep={setActiveStep}
+                                nextStep={nextStep}
+                                backStep={backStep}
+                              />
+                            ) : null}
+                          </Card>
+                        </div>
+                      )}
+                      {!jwtToken && null}
+                    </AccordionDetails>
+                  </Accordion>
+                  // </Draggable>
+                )}
 
-                    //   // disabled={false}
-                    //   // bounds="body"
-                    //   handle=".companyProfileClassForDrag"
-                    // >
+                {!isiPad && (
+                  <Draggable
+                    onDrag={handleDrag}
+                    onStop={enableAccordionButton}
+                    position={position.current}
+                    // defaultPosition={{ x: userScreenWidth, y: 25 }}
+
+                    // disabled={false}
+                    // bounds="body"
+                    handle=".companyProfileClassForDrag, #panel1a-header"
+                  >
                     <Accordion
                       elevation={0}
                       disabled={disabled}
@@ -392,109 +487,23 @@ const App = (props) => {
                       TransitionProps={{
                         timeout: 0,
                       }}
-                      expanded={expanded === 'panel1'}
-                      onChange={handleChange('panel1')}
+                      expanded={expanded === "panel1"}
+                      onChange={handleChange("panel1")}
                     >
                       <AccordionSummary
-                        className={classes.accordionIpad}
+                        className={classes.accordion}
                         expandIcon={<BookinglaneIcon />}
-                        aria-controls='panel1a-content'
-                        id='panel1a-header'
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
                         ref={refOfBookNow}
                         onClick={() => {
                           setBackgroundScrollStop(true)
                         }}
                       ></AccordionSummary>
-
                       <AccordionDetails>
                         {jwtToken && (
-                          <div className='mainContent'>
-                            <Card
-                              className={classes.contentIpad}
-                              style={{ bottom: userScreenHeight - yOrdinate }}
-                              style={
-                                activeStep === 1
-                                  ? { overflowY: 'hidden auto' }
-                                  : { overflowY: 'auto' }
-                              }
-                              ref={refOfCard}
-                              // style={{ borderRadius: "10px" }}
-                            >
-                              <AppBar position='sticky' color=' #101020'>
-                                <div className='companyProfileClassForDrag'>
-                                  {/* этот класс c div-oм для реакт драга чтобы можно было перетаскивать по шапке виджета*/}
-                                  <div className={classes.companyProfile}>
-                                    {/* это для pointer cursora */}
-                                    <CompanyProfile
-                                      setExpanded={handleClose}
-                                      initializing={props.initializing}
-                                      expanded={expanded}
-                                      setActiveStep={setActiveStep}
-                                      setBackgroundScrollStop={
-                                        setBackgroundScrollStop
-                                      }
-                                    />
-                                  </div>
-                                </div>
-                              </AppBar>
-
-                              {props.initializing ? (
-                                <CheckOut
-                                  isFetching={props.isFetching}
-                                  setExpanded={handleClose}
-                                  activeStep={activeStep}
-                                  setActiveStep={setActiveStep}
-                                  nextStep={nextStep}
-                                  backStep={backStep}
-                                />
-                              ) : null}
-                            </Card>
-                          </div>
-                        )}
-                        {!jwtToken && null}
-                      </AccordionDetails>
-                    </Accordion>
-                    // </Draggable>
-                  )}
-
-                  {!isiPad && (
-                    <Draggable
-                      onDrag={handleDrag}
-                      onStop={enableAccordionButton}
-                      position={position.current}
-                      // defaultPosition={{ x: userScreenWidth, y: 25 }}
-
-                      // disabled={false}
-                      // bounds="body"
-                      handle='.companyProfileClassForDrag, #panel1a-header'
-                    >
-                      <Accordion
-                        elevation={0}
-                        disabled={disabled}
-                        classes={{
-                          root: classes.MuiAccordionroot,
-                          disabled: classes.disabledButton,
-                        }}
-                        TransitionProps={{
-                          timeout: 0,
-                        }}
-                        expanded={expanded === 'panel1'}
-                        onChange={handleChange('panel1')}
-                      >
-                        <AccordionSummary
-                          className={classes.accordion}
-                          expandIcon={<BookinglaneIcon />}
-                          aria-controls='panel1a-content'
-                          id='panel1a-header'
-                          ref={refOfBookNow}
-                          onClick={() => {
-                            setBackgroundScrollStop(true)
-                          }}
-                        ></AccordionSummary>
-                        <AccordionDetails>
-                          {jwtToken && (
-                            <div className='mainContent'>
-                              {/* <div
+                          <div className="mainContent">
+                            {/* <div
                                 style={{
                                   width: "15px",
                                   height: "15px",
@@ -514,59 +523,59 @@ const App = (props) => {
                               >
                                 <CloseWidgetIcon />
                               </div> */}
-                              <Card
-                                className={classes.content}
-                                style={{ bottom: userScreenHeight - yOrdinate }}
-                                style={
-                                  activeStep === 1
-                                    ? { overflowY: 'hidden auto' }
-                                    : { overflowY: 'auto' }
-                                }
-                                ref={refOfCard}
-                                // style={{ borderRadius: "10px" }}
-                              >
-                                <AppBar position='sticky' color=' #101020'>
-                                  <div className='companyProfileClassForDrag'>
-                                    {/* этот класс c div-oм для реакт драга чтобы можно было перетаскивать по шапке виджета*/}
-                                    <div className={classes.companyProfile}>
-                                      {/* это для pointer cursora */}
-                                      <CompanyProfile
-                                        setExpanded={handleClose}
-                                        initializing={props.initializing}
-                                        expanded={expanded}
-                                        setActiveStep={setActiveStep}
-                                        setBackgroundScrollStop={
-                                          setBackgroundScrollStop
-                                        }
-                                      />
-                                    </div>
+                            <Card
+                              className={classes.content}
+                              style={{ bottom: userScreenHeight - yOrdinate }}
+                              style={
+                                activeStep === 1
+                                  ? { overflowY: "hidden auto" }
+                                  : { overflowY: "auto" }
+                              }
+                              ref={refOfCard}
+                              // style={{ borderRadius: "10px" }}
+                            >
+                              <AppBar position="sticky" color=" #101020">
+                                <div className="companyProfileClassForDrag">
+                                  {/* этот класс c div-oм для реакт драга чтобы можно было перетаскивать по шапке виджета*/}
+                                  <div className={classes.companyProfile}>
+                                    {/* это для pointer cursora */}
+                                    <CompanyProfile
+                                      setExpanded={handleClose}
+                                      initializing={props.initializing}
+                                      expanded={expanded}
+                                      setActiveStep={setActiveStep}
+                                      setBackgroundScrollStop={
+                                        setBackgroundScrollStop
+                                      }
+                                    />
                                   </div>
-                                </AppBar>
+                                </div>
+                              </AppBar>
 
-                                {props.initializing ? (
-                                  <CheckOut
-                                    isFetching={props.isFetching}
-                                    setExpanded={handleClose}
-                                    activeStep={activeStep}
-                                    setActiveStep={setActiveStep}
-                                    nextStep={nextStep}
-                                    backStep={backStep}
-                                  />
-                                ) : null}
-                              </Card>
-                            </div>
-                          )}
-                          {!jwtToken && null}
-                        </AccordionDetails>
-                      </Accordion>
-                    </Draggable>
-                  )}
-                </div>
-              </ThemeProvider>
-            </>
-          )}
-        </>
-      )}
+                              {props.initializing ? (
+                                <CheckOut
+                                  isFetching={props.isFetching}
+                                  setExpanded={handleClose}
+                                  activeStep={activeStep}
+                                  setActiveStep={setActiveStep}
+                                  nextStep={nextStep}
+                                  backStep={backStep}
+                                />
+                              ) : null}
+                            </Card>
+                          </div>
+                        )}
+                        {!jwtToken && null}
+                      </AccordionDetails>
+                    </Accordion>
+                  </Draggable>
+                )}
+              </div>
+            </ThemeProvider>
+          </>
+        )}
+      </>
+      {/* )} */}
     </>
   )
 }
@@ -576,6 +585,7 @@ const mapStateToProps = (state) => {
     isFetching: state.cars.isFetching,
     companyName: state.companyProfile.profile.companyName,
     initializing: state.companyProfile.initializing,
+    loading: state.companyToken.loading,
   }
 }
 

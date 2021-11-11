@@ -23,9 +23,9 @@ export const setResetWidgetInputsActionCreator = (flag) => ({
   payload: flag,
 })
 
-export const setResetWidgetInputs = () => {
+export const setResetWidgetInputs = (flag) => {
   return (dispatch) => {
-    dispatch(setResetWidgetInputsActionCreator(true))
+    dispatch(setResetWidgetInputsActionCreator(flag))
   }
 }
 

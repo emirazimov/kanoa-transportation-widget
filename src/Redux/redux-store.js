@@ -5,7 +5,7 @@ import companyProfileReducer from "./company-profile-reducer"
 import formReducer from "./form-reducer"
 import carsReducer from "./car-reducer"
 import resetWidgetInputsReducer from "./reset-widget-inputs-reducer"
-import setHourlyReducer from "./hourly-reducer"
+import setHourlyReducerAndSeats from "./hourly-reducer"
 import gateMeetingReducer from "./gate-meeting-reducer"
 
 let rootReducer = combineReducers({
@@ -14,7 +14,7 @@ let rootReducer = combineReducers({
   formData: formReducer,
   cars: carsReducer,
   resetWidgetInputs: resetWidgetInputsReducer,
-  hourlyRedux: setHourlyReducer,
+  hourlyAndSeatsRedux: setHourlyReducerAndSeats,
   gateMeeting: gateMeetingReducer,
 })
 

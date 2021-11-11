@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
   baseURL: `https://apidev.bookinglane.com/api/`,
   headers: {
     Authorization: "Bearer " + jwtToken,
-    "App-Version": "1.0.69",
+    "App-Version": "1.2.01",
   },
 })
 
@@ -28,7 +28,7 @@ export const authApi = {
 
     const headers = {
       Authorization: "Bearer " + jwtToken,
-      "App-Version": "1.0.69",
+      "App-Version": "1.2.01",
     }
 
     return axiosInstance
@@ -62,13 +62,18 @@ export const fleetApi = {
         {
           headers: {
             Authorization: "Bearer " + jwtToken,
-            "App-Version": "1.0.69",
+            "App-Version": "1.2.01",
           },
         }
       )
       .then((response) => {
         console.log(response.data)
-        return response.data
+        return response
+      })
+      .catch(function (error) {
+        if (error.response) {
+          return error.response
+        }
       })
   },
 }
@@ -103,7 +108,7 @@ export const formApi = {
         {
           headers: {
             Authorization: "Bearer " + jwtToken,
-            "App-Version": "1.0.69",
+            "App-Version": "1.2.01",
           },
         }
       )

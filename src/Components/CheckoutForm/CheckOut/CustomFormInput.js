@@ -1,9 +1,9 @@
 import { makeStyles } from "@material-ui/core"
 import TextField from "@material-ui/core/TextField"
-import Autocomplete from "@material-ui/lab/Autocomplete"
+// import Autocomplete from "@material-ui/lab/Autocomplete"
 import {
   DatePicker,
-  DateTimePicker,
+  // DateTimePicker,
   // TimePicker,
   // KeyboardTimePicker,
 } from "@material-ui/pickers"
@@ -12,8 +12,8 @@ import React from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import InputMask from "react-input-mask"
 import { PlacesAutocomplete } from "react-places-autocomplete"
-import { TimePicker } from "antd"
-import "antd/dist/antd.css"
+// import { TimePicker } from "antd"
+// import "antd/dist/antd.css"
 import "./index.css"
 
 const useStyles = makeStyles((theme) => ({
@@ -59,25 +59,55 @@ const useStyles = makeStyles((theme) => ({
       opacity: "1",
       fontSize: "14px",
     },
-    "&:-webkit-autofill": {
-      height: "0px",
-      border: "none",
-      borderRadius: "0px",
-      WebkitBoxShadow: "0 0 0 1000px black inset",
-      WebkitTextFillColor: "white",
-    },
+    "&:-webkit-autofill, :-webkit-autofill:focus, :-webkit-autofill:active, :-webkit-autofill:hover":
+      {
+        height: "0px",
+        border: "none",
+        borderRadius: "0px",
+        WebkitBoxShadow: "0 0 0 1000px rgba(0, 0, 0, 1) inset !important",
+        WebkitTextFillColor: "white",
+        backgroundColor: "rgba(0, 0, 0, 1) !important",
+        backgroundClip: "content-box !important",
+      },
+    // "&:-webkit-autofill:focus": {
+    //   height: "0px",
+    //   border: "none",
+    //   borderRadius: "0px",
+    //   WebkitBoxShadow: "0 0 0 1000px rgba(0, 0, 0, 1) inset !important",
+    //   WebkitTextFillColor: "white",
+    //   backgroundColor: "rgba(0, 0, 0, 1) !important",
+    //   backgroundClip: "content-box !important",
+    // },
+    // "&:-webkit-autofill:active": {
+    //   height: "0px",
+    //   border: "none",
+    //   borderRadius: "0px",
+    //   WebkitBoxShadow: "0 0 0 1000px rgba(0, 0, 0, 1) inset !important",
+    //   WebkitTextFillColor: "white",
+    //   backgroundColor: "rgba(0, 0, 0, 1) !important",
+    //   backgroundClip: "content-box !important",
+    // },
+    // "&:-webkit-autofill:hover": {
+    //   height: "0px",
+    //   border: "none",
+    //   borderRadius: "0px",
+    //   WebkitBoxShadow: "0 0 0 1000px rgba(0, 0, 0, 1) inset !important",
+    //   WebkitTextFillColor: "white",
+    //   backgroundColor: "rgba(0, 0, 0, 1) !important",
+    //   backgroundClip: "content-box !important",
+    // },
     "MuiOutlinediput-input:-webkit-autofill": {
       WebkitTextFillColor: "white",
     },
   },
 
-  "&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded":
-    {
-      zIndex: "1000000000000000000",
-    },
-  modalRoot: {
-    zIndex: "1000000000000000000",
-  },
+  // "&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded":
+  //   {
+  //     zIndex: "1000000000000000000",
+  //   },
+  // modalRoot: {
+  //   zIndex: "1000000000000000000",
+  // },
 }))
 
 export const CustomFormInput = ({ defaultValue, name, required, ...props }) => {
@@ -108,6 +138,7 @@ export const CustomFormInputForPayment = ({
     // height: "0px",
     // WebkitTextFillColor: "white",
   }
+
   return (
     <Controller
       as={TextField}
@@ -115,7 +146,6 @@ export const CustomFormInputForPayment = ({
       name={name}
       required={required}
       defaultValue={defaultValue}
-      inputProps={{ style: inputStyle }}
       InputProps={{
         classes: {
           root: classes.inputRoot,
@@ -205,20 +235,20 @@ export const DateInputControl = ({ name, required, ...props }) => {
     ></Controller>
   )
 }
-export const TimeInputControl = ({ name, required, ...props }) => {
-  const { control } = useFormContext()
+// export const TimeInputControl = ({ name, required, ...props }) => {
+//   const { control } = useFormContext()
 
-  return (
-    <Controller
-      as={TimePicker}
-      name={name}
-      required={required}
-      style={{ cursor: "pointer" }}
-      {...props}
-      control={control}
-    ></Controller>
-  )
-}
+//   return (
+//     <Controller
+//       as={TimePicker}
+//       name={name}
+//       required={required}
+//       style={{ cursor: "pointer" }}
+//       {...props}
+//       control={control}
+//     ></Controller>
+//   )
+// }
 
 export const TimeInputControlNewOne = ({
   defaultValue,

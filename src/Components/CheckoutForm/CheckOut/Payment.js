@@ -100,11 +100,24 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "14px",
     },
     fontSize: "14px",
+    // "MuiOutlinediput-input:-webkit-autofill": {
+    //   WebkitTextFillColor: "black",
+    // },
   },
   inputRootAutocomplete2: {
     height: "40px",
-    WebkitBoxShadow: "0 0 0 1000px black inset",
+    WebkitBoxShadow: "0 0 0 1000px black inset !important",
+
     height: "0px",
+  },
+  inputRootAutocomplete3: {
+    "&:-webkit-autofill, :-webkit-autofill:focus, :-webkit-autofill:active, :-webkit-autofill:hover":
+      {
+        WebkitBoxShadow: "0 0 0 1000px rgba(0, 0, 0, 1) inset !important",
+        WebkitTextFillColor: "white",
+        backgroundColor: "rgba(0, 0, 0, 1) !important",
+        backgroundClip: "content-box !important",
+      },
   },
   popupIndicator: {
     height: "100%",
@@ -151,13 +164,16 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     // height: "40px",
-    "&:-webkit-autofill": {
-      height: "0px",
-      border: "none",
-      borderRadius: "0px",
-      WebkitBoxShadow: "0 0 0 1000px black inset",
-      WebkitTextFillColor: "white",
-    },
+    "&:-webkit-autofill, :-webkit-autofill:focus, :-webkit-autofill:active, :-webkit-autofill:hover":
+      {
+        height: "0px",
+        border: "none",
+        borderRadius: "0px",
+        WebkitBoxShadow: "0 0 0 1000px rgba(0, 0, 0, 1) inset !important",
+        WebkitTextFillColor: "white",
+        backgroundColor: "rgba(0, 0, 0, 1) !important",
+        backgroundClip: "content-box !important",
+      },
     "MuiOutlinediput-input:-webkit-autofill": {
       WebkitTextFillColor: "white",
     },
@@ -527,10 +543,12 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                 options={states}
                 defaultValue={null}
                 autoComplete="off"
+                disablePortal
                 autoHighlight
                 InputProps={{
                   classes: {
                     root: classes.inputRootAutocomplete2,
+                    input: classes.inputRootAutocomplete3,
                   },
                 }}
                 classes={{
@@ -584,6 +602,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                     options={cities}
                     key={statesId}
                     autoComplete="off"
+                    disablePortal
                     defaultValue={null}
                     autoHighlight
                     getOptionLabel={(option) => option.name}
