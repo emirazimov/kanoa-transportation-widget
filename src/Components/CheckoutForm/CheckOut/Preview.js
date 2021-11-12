@@ -259,16 +259,25 @@ const Preview = ({
                         >
                           or similar
                         </div>
-                        <img
-                          src={url.path}
+                        <AspectRatio
+                          // ratio="560/315"
                           style={{
+                            display: "block",
                             width: !isMobile ? "100%" : "100%",
-                            height: !isMobile ? "118px" : "116px",
-
+                            height: !isMobile ? "112px" : "116px",
+                            // borderRadius: "8px",
                             cursor: "zoom-in",
                           }}
-                          alt="car"
-                        />
+                        >
+                          <img
+                            src={url.path}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                            }}
+                            alt="car"
+                          />
+                        </AspectRatio>
                       </span>
                     ))
                   ) : (
@@ -373,8 +382,8 @@ const Preview = ({
                                 src={url.path}
                                 style={{
                                   borderRadius: "8px",
-                                  // width: "100%",
-                                  // height: "100%",
+                                  maxWidth: "100%",
+                                  maxHeight: "100%",
                                 }}
                                 alt="car"
                                 key={`${url.id}${url.path}`}

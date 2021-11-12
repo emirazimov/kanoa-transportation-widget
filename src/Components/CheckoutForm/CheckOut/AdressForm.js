@@ -614,10 +614,7 @@ const AdressFormwithoutReactMemo = ({
       } else {
         setRedBorderOnSubmit2(false)
       }
-      if (
-        !new Date(data.orderStartDate).toLocaleDateString("en-GB") ||
-        !formData.dateForDefaultValue
-      ) {
+      if (!data?.orderStartDate && !formData?.dateForDefaultValue) {
         // if (
         //   !new Date(data.orderStartDate).toLocaleDateString("en-GB") &&
         //   !formData.dateForDefaultValue
