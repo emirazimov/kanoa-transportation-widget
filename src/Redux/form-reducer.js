@@ -18,6 +18,9 @@ const SET_TIME_DEFAULT_VALUE_ALIGNMENT =
 const SET_PASSENGERS_QUANTITY_FOR_BACKSTEP =
   "./form-reducer/SET_PASSENGERS_QUANTITY_FOR_BACKSTEP"
 
+const SET_IS_AIRPORT_PICKUP_INCLUDED =
+  "./form-reducer/SET_IS_AIRPORT_PICKUP_INCLUDED"
+
 let initialState = {
   orderType: 3,
   bookingType: 0,
@@ -217,6 +220,11 @@ const formReducer = (state = initialState, action) => {
         ...state,
         passengersQuantityForBackStep: action.payload,
       }
+    case SET_IS_AIRPORT_PICKUP_INCLUDED:
+      return {
+        ...state,
+        isAirportPickupIncluded: action.payload,
+      }
 
     default:
       return state
@@ -255,6 +263,11 @@ export const setTimeForDefaultValueAlignment = (alignment) => ({
 export const setPassengersQuantityForBackStep = (quantity) => ({
   type: SET_PASSENGERS_QUANTITY_FOR_BACKSTEP,
   payload: quantity,
+})
+
+export const setIsAirportPickupIncluded = (flag) => ({
+  type: SET_IS_AIRPORT_PICKUP_INCLUDED,
+  payload: flag,
 })
 
 export const setPaymentForm = (form, cityId, stateId, date) => ({

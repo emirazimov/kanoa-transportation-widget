@@ -209,6 +209,7 @@ const GoogleMap = React.memo(
         if (results[0].types.some((types) => types === "airport")) {
           placeType = 2
         }
+        console.log(results)
         selectedArray = [...destinations]
         selectedArray[id] = {
           ...selectedArray[id],

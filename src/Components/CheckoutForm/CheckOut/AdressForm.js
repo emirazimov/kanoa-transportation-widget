@@ -696,6 +696,9 @@ const AdressFormwithoutReactMemo = ({
   const [openTimePicker, setOpenTimePicker] = useState(false)
   let firstAirline =
     destinations[0]?.rideCheckPoint.match(/(^|\W)Airport($|\W)/)
+  let firstAirline2 = destinations[0]?.rideCheckPoint.match(
+    /(^|\W)300 Rodgers Boulevard, Honolulu, HI, USA($|\W)/
+  )
   // let secondAirline =
   //   destinations[1]?.rideCheckPoint.match(/(^|\W)Airport($|\W)/)
   // if (destinations[0]?.rideCheckPoint.match(/(^|\W)Airport($|\W)/)) {
@@ -716,7 +719,7 @@ const AdressFormwithoutReactMemo = ({
   }
 
   React.useEffect(() => {
-    if (firstAirline) {
+    if (firstAirline || firstAirline2) {
       setIsAirline(true)
       setBookingType(3)
       fetchAirlines()
@@ -725,10 +728,10 @@ const AdressFormwithoutReactMemo = ({
       setIsAirline(false)
       setDisableHourly(false)
     }
-  }, [firstAirline])
+  }, [firstAirline, firstAirline2])
   React.useEffect(() => {
     if (hourly) {
-      if (firstAirline) {
+      if (firstAirline || firstAirline2) {
         setBookingType(3)
       } else {
         setBookingType(2)
@@ -736,7 +739,7 @@ const AdressFormwithoutReactMemo = ({
 
       // setDisableHourly(true)
     } else {
-      if (firstAirline) {
+      if (firstAirline || firstAirline2) {
         setBookingType(3)
       } else {
         setBookingType(1)
@@ -1351,6 +1354,72 @@ const AdressFormwithoutReactMemo = ({
                     </Grid>
                   </Grid>
                 )}
+              {destinations[1]?.rideCheckPoint.match(/(^|\W)Airport($|\W)/) && (
+                <Grid
+                  item
+                  style={{
+                    width: "100%",
+                    marginTop: "8px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justify="space-between"
+                  >
+                    <Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        alignItems="center"
+                        style={{ paddingLeft: "8px" }}
+                      >
+                        <MeetAndGreetIcon />
+                        <Typography
+                          style={{
+                            color: "white",
+                            fontSize: "15px",
+                            marginLeft: "7px",
+                          }}
+                        >
+                          {"Meet & Greet/Luggage Assist"}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <AntSwitch
+                        onClick={() => {
+                          if (gateMeeting == false) {
+                            // setIsGateMeeting(true)
+                            setGateMeetingRedux(true)
+                            setIsGateMeeting(true)
+                            setIsAirportPickupIncludedLocalState(true)
+                            console.log("true")
+                          } else {
+                            // setIsGateMeeting(false)
+                            setGateMeetingRedux(false)
+                            setIsGateMeeting(false)
+                            setIsAirportPickupIncludedLocalState(false)
+                            console.log("false")
+                          }
+                          // setIsGateMeeting(!isGateMeeting)
+                          // setTimeout(() => {
+                          //   console.log(isGateMeeting)
+                          //   if (isGateMeeting == true) {
+                          //     setGateMeetingRedux(true)
+                          //   } else {
+                          //     setGateMeetingRedux(false)
+                          //   }
+                          // }, 1500)
+                        }}
+                        color="primary"
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              )}
               <Grid item style={{ width: "100%", marginTop: "6px" }}>
                 <Grid
                   container

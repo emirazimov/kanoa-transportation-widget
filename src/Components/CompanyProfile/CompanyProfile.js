@@ -17,6 +17,7 @@ import {
   setResetWidgetInputs,
   setResetWidgetInputsActionCreator,
 } from "../../Redux/reset-widget-inputs-reducer"
+import { setIsAirportPickupIncluded } from "../../Redux/form-reducer"
 
 const useStyles = makeStyles((theme) => ({
   companyContainer: {
@@ -77,6 +78,7 @@ const CompanyProfile = ({
   resetInputs,
   setResetWidgetInputs,
   setGotAddressError,
+  setIsAirportPickupIncluded,
 }) => {
   const classes = useStyles()
 
@@ -147,6 +149,7 @@ const CompanyProfile = ({
                   setBackgroundScrollStop(false)
                   setResetWidgetInputs(true)
                   setGotAddressError(false)
+                  setIsAirportPickupIncluded(false)
                 }}
               >
                 <CloseWidgetIcon />
@@ -177,4 +180,5 @@ export default connect(mapStateToProps, {
   getCompanyProfile,
   setResetWidgetInputs,
   setGotAddressError,
+  setIsAirportPickupIncluded,
 })(CompanyProfile)
