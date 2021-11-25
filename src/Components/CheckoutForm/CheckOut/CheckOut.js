@@ -18,6 +18,8 @@ const CheckOut = ({
   isFetching,
   backgroundScrollStopForTimePicker,
   setBackgroundScrollStopForTimePicker,
+
+  setBackgroundScrollStop,
 }) => {
   const Form = () => {
     switch (activeStep) {
@@ -58,6 +60,7 @@ const CheckOut = ({
           back={backStep}
           setExpanded={setExpanded}
           setActiveStep={setActiveStep}
+          setBackgroundScrollStop={setBackgroundScrollStop}
         />
       ) : (
         <Form />
