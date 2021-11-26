@@ -810,10 +810,10 @@ const AdressFormwithoutReactMemo = ({
 
   const handleInput = (event) => {
     if (event.target.value == "0_:__") {
-      setTimeMask(true)
+      setTimeMask(false)
     }
     if (event.target.value == "1_:__") {
-      setTimeMask(false)
+      setTimeMask(true)
     }
     setTimeForDefaultValue(event.target.value)
     setTime(event.target.value)
@@ -867,7 +867,7 @@ const AdressFormwithoutReactMemo = ({
     7: "[0-1]",
     8: "[0-9]",
     9: "[0-5]",
-    1: timeMask ? "[0-9]" : "[0-2]",
+    1: !timeMask ? "[0-9]" : "[0-2]",
     a: "[A-Za-z]",
     "*": "[A-Za-z0-9]",
   }

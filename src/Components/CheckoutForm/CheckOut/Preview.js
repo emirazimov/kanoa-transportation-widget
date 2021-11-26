@@ -148,13 +148,14 @@ const Preview = ({
 
   const showCarAmount = () => {
     if (selectedCar.boosterSeatPrice || selectedCar.safetySeatPrice) {
-      return `$${
+      return `$${round(
         selectedCar.price -
-        selectedCar.boosterSeatPrice -
-        selectedCar.safetySeatPrice
-      }`
+          selectedCar.boosterSeatPrice -
+          selectedCar.safetySeatPrice,
+        2
+      )}`
     } else {
-      return `$${selectedCar.price}`
+      return `$${round(selectedCar.price, 2)} `
     }
   }
 
@@ -561,12 +562,13 @@ const Preview = ({
                         }}
                       >
                         {gateMeeting
-                          ? `$${
+                          ? `$${round(
                               selectedCar.price -
-                              selectedCar.greetAndMeetPrice -
-                              selectedCar.boosterSeatPrice -
-                              selectedCar.safetySeatPrice
-                            }`
+                                selectedCar.greetAndMeetPrice -
+                                selectedCar.boosterSeatPrice -
+                                selectedCar.safetySeatPrice,
+                              2
+                            )}`
                           : showCarAmount()}
                         {/* {{}()} */}
                       </Typography>
